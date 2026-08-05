@@ -1,23 +1,182 @@
 aid: recode-therapeutics
 name: ReCode Therapeutics
-description: 'ReCode Therapeutics is a company surfaced via the API Evangelist harvest backlog (source:
-  secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  ReCode Therapeutics is a clinical-stage genetic medicines company headquartered in Menlo Park,
+  California with operations in Dallas, Texas, founded in 2015 out of research at UT Southwestern.
+  Its Selective Organ Targeting (SORT) lipid nanoparticle platform is a delivery technology that
+  directs mRNA and gene-correction payloads to organs, tissues and cells beyond the liver — the
+  constraint that has limited genetic medicines to date — with redosing capability. Its lead
+  programmes are RCT1100, an inhaled DNAI1 mRNA therapy for primary ciliary dyskinesia which has
+  reported first-ever proof of activity in PCD patients, and RCT2100, an inhaled CFTR mRNA therapy
+  for cystic fibrosis now in a Phase 2 combination trial with ivacaftor; both hold U.S. FDA Orphan
+  Drug designation. The company collaborates with Intellia Therapeutics on CRISPR-based gene
+  correction for cystic fibrosis, is funded in part by the Cystic Fibrosis Foundation, and has
+  raised over $260 million in Series B financing. ReCode Therapeutics runs no developer program and
+  publishes no product API, developer portal or API documentation; the only machine-readable
+  surface reachable without credentials is the WordPress REST content API behind recodetx.com,
+  catalogued here alongside the llms.txt the site publishes.
+image: https://recodetx.com/wp-content/uploads/2022/06/ReCode_Logo_Primary_Web.svg
 url: https://raw.githubusercontent.com/api-evangelist/recode-therapeutics/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enriched
 specificationVersion: '0.20'
 created: '2026-08-05'
 modified: '2026-08-05'
 tags:
 - Company
-apis: []
+- genetic-medicines
+- biotechnology
+- biopharmaceuticals
+- mrna
+- gene-correction
+- lipid-nanoparticles
+- drug-delivery
+- rare-disease
+- cystic-fibrosis
+- primary-ciliary-dyskinesia
+- clinical-trials
+- life-sciences
+- content-api
+apis:
+- aid: recode-therapeutics:recode-therapeutics-content-api
+  name: ReCode Therapeutics Content API
+  description: >-
+    The anonymously readable WordPress REST API behind recodetx.com. It exposes 82 press releases,
+    scientific publications and conference presentations; the 18 corporate pages (Our Purpose,
+    Leadership, Careers & Culture, Science, Pipeline, Clinical Studies, Patients, Cystic Fibrosis,
+    Primary Ciliary Dyskinesia, Partnering, News, Media Library and the legal set); a 305-item media
+    library carrying the ATS conference posters and investor decks as PDFs; two site-specific custom
+    post types registered into wp/v2 — `events` (50 conference and investor appearances) and
+    `values` (6 stated company values); the category and tag taxonomies; the registered
+    type/status/taxonomy descriptors; cross-content search; and the oEmbed 1.0 provider endpoint.
+    Unlike many corporate WordPress installs, `content.rendered` IS populated on posts and pages
+    here, so the API returns real prose rather than identity metadata alone. This is not a developer
+    product ReCode Therapeutics markets — it is the site's own content surface, registered at
+    /wp-json/ and verified to return data without credentials. The OpenAPI in this repository is
+    derived from the published route index and models only the operations that actually answered
+    anonymously.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://recodetx.com/wp-json
+  tags:
+  - content
+  - wordpress
+  - corporate
+  - media
+  - events
+  properties:
+  - type: OpenAPI
+    url: openapi/recode-therapeutics-content-openapi.yml
+  - type: Overlay
+    url: overlays/recode-therapeutics-content-overlay.yaml
+  - type: Authentication
+    url: authentication/recode-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/recode-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/recode-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/recode-therapeutics-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/recode-therapeutics-lifecycle.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  x-contract-provenance: >-
+    Derived by the API Evangelist enrichment pipeline from the WordPress REST route index the site
+    publishes at https://recodetx.com/wp-json/ — 376 routes across the namespaces oembed/1.0,
+    wpe/cache-plugin/v1, wpe_sign_on_plugin/v1, aioseo/v1, jupiterx-license, redirection/v1,
+    complianz/v1, elementor/v1, monsterinsights/v1, elementor/v1/documents, elementor-ai/v1,
+    elementor-pro/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1 and wp-abilities/v1 — and
+    verified against live anonymous responses on 2026-08-05. Only the 27 operations that returned
+    data without credentials are modelled. Every write route and every administrative namespace
+    returns 401 anonymously and is deliberately omitted rather than documented as a capability.
+    Notably the install registers the WordPress Abilities API (`wp-abilities/v1`), an agent-facing
+    capability registry, but /wp-json/wp-abilities/v1/abilities returns 401 rest_forbidden, so no
+    agent surface is claimed here. /wp/v2/settings, /wp/v2/menu-items, /wp/v2/themes,
+    /wp/v2/plugins, /wp/v2/templates, /wp/v2/block-patterns/patterns, /wp/v2/font-families and
+    /wp/v2/elementor_library all return 401. /wp/v2/comments, /wp/v2/portfolio and /wp/v2/navigation
+    return 200 with empty collections. One exposure is recorded rather than exploited:
+    /wp/v2/users returns 200 with 5 identifiable author records anonymously; it is documented in the
+    OpenAPI with an x-personal-data annotation and a remediation note, and is deliberately excluded
+    from every packaged Agent Skill. ReCode Therapeutics publishes no developer documentation, no
+    API reference, no getting-started guide, no status page, no changelog and no developer support
+    channel, so no Documentation/APIReference/GettingStarted/DeveloperPortal/StatusPage/ChangeLog
+    pointers are emitted; the humanURL above is the upstream WordPress REST handbook that defines
+    the wp/v2 contract.
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/recode-therapeutics-domain-security.yml
 - type: Website
+  url: https://recodetx.com/
+- type: About
+  url: https://recodetx.com/about/
+- type: Science
+  url: https://recodetx.com/science/
+- type: Pipeline
+  url: https://recodetx.com/pipeline/
+- type: ClinicalStudies
+  url: https://recodetx.com/clinical-studies/
+- type: Patients
+  url: https://recodetx.com/patients/
+- type: Partnering
+  url: https://recodetx.com/partnering/
+- type: Leadership
+  url: https://recodetx.com/leadership/
+- type: Careers
+  url: https://recodetx.com/careers-culture/
+- type: News
+  url: https://recodetx.com/news/
+- type: BlogRSS
+  url: https://recodetx.com/feed/
+- type: Events
+  url: https://recodetx.com/events/
+- type: MediaLibrary
+  url: https://recodetx.com/media-library/
+- type: TermsOfService
+  url: https://recodetx.com/terms-conditions/
+- type: PrivacyPolicy
+  url: https://recodetx.com/privacy-policy/
+- type: CookiePolicy
+  url: https://recodetx.com/cookie-policy/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/recode-therapeutics/
+- type: Twitter
+  url: https://twitter.com/ReCodeTx
+- type: Instagram
+  url: https://www.instagram.com/recodetx/
+- type: Sitemap
+  url: https://recodetx.com/sitemap.xml
+- type: SecondaryMarket
   url: https://forgeglobal.com/recode-therapeutics_stock/
+- type: LLMsTxt
+  url: llms/recode-therapeutics-llms.txt
+- type: WellKnown
+  url: well-known/recode-therapeutics-well-known.yml
+- type: Authentication
+  url: authentication/recode-therapeutics-authentication.yml
+- type: Conventions
+  url: conventions/recode-therapeutics-conventions.yml
+- type: Conformance
+  url: conformance/recode-therapeutics-conformance.yml
+- type: ErrorCatalog
+  url: errors/recode-therapeutics-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/recode-therapeutics-lifecycle.yml
+- type: DataModel
+  url: data-model/recode-therapeutics-data-model.yml
+- type: JSONLD
+  url: json-ld/recode-therapeutics-json-ld.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-08-05'
+  status: enriched
+  artifacts_added: 17
+  pass: local-v1
+

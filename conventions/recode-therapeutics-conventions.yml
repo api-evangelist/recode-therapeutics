@@ -1,0 +1,136 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/recode-therapeutics-content-openapi.yml
+summary: >-
+  Cross-cutting runtime semantics for the ReCode Therapeutics content API, derived from the live
+  surface and verified 2026-08-05. These are WordPress REST conventions rather than conventions
+  ReCode Therapeutics chose or documents — the company publishes no API guide. Recorded so a
+  consumer or agent can operate the surface correctly without trial and error.
+authentication:
+  style: none
+  detail: Anonymous read. No key, header, token or cookie is required or accepted for the public surface.
+  see: authentication/recode-therapeutics-authentication.yml
+idempotency:
+  supported: false
+  detail: >-
+    Not applicable and NOT claimed. Every publicly reachable operation is a GET, which is idempotent
+    and safe by HTTP definition, but the API implements no idempotency-key mechanism because it
+    exposes no public write path. No Idempotency-Key header, no replay window, no dedupe scope.
+  header: null
+pagination:
+  style: page-number
+  request_params:
+    page: 1-based page index, default 1
+    per_page: items per page, default 10, hard maximum 100 (101 returns 400 rest_invalid_param)
+  response_signals:
+    X-WP-Total: total items in the unpaged collection
+    X-WP-TotalPages: total pages at the current per_page
+    Link: RFC 8288 header carrying rel="next" and rel="prev"
+  detail: >-
+    Counts and page links live in HEADERS, not in the body — the body is a bare JSON array with no
+    envelope. A consumer that only reads the body cannot tell there is a next page.
+  observed:
+    - collection: /wp/v2/posts
+      total: 82
+    - collection: /wp/v2/pages
+      total: 18
+    - collection: /wp/v2/media
+      total: 305
+    - collection: /wp/v2/events
+      total: 50
+    - collection: /wp/v2/values
+      total: 6
+    - collection: /wp/v2/categories
+      total: 7
+    - collection: /wp/v2/tags
+      total: 11
+  gotcha: >-
+    Deep pagination over a date-ordered collection is unstable if content is published mid-walk.
+    For a repeatable full read, pin the ordering with orderby=id&order=asc.
+sparse_fieldsets:
+  supported: true
+  param: _fields
+  detail: >-
+    Comma-separated projection, e.g. _fields=id,slug,title,modified. Works on every collection and
+    item route. Materially useful here — a single page record carries a 53 KB content.rendered, so
+    projecting it away turns a directory walk from megabytes into kilobytes.
+  verified: GET /wp/v2/posts?_fields=id,slug,title&per_page=2 returned 200
+expansion:
+  supported: true
+  param: _embed
+  detail: >-
+    Inlines linked resources — author, featured media, terms — into an `_embedded` object on each
+    item, collapsing what would otherwise be N+1 follow-up requests. The link relations themselves
+    are always present under `_links` (HAL-style, with a `curies` block mapping the `wp:` prefix).
+  verified: GET /wp/v2/posts?_embed&per_page=1 returned 200
+filtering:
+  search: "?search=<term> — substring match; narrowed /wp/v2/posts from 82 to 51 for \"cystic\""
+  by_slug: "?slug=<slug> — exact slug lookup, the stable alternative to numeric IDs"
+  by_taxonomy: "?categories=<termIds> and ?tags=<termIds> on /wp/v2/posts"
+  by_date: "?after= / ?before= (publication date) and ?modified_after= (change date), ISO 8601"
+  by_media_type: "?media_type= and ?mime_type= on /wp/v2/media"
+  ordering: "?orderby= (date, modified, id, slug, title, relevance, parent, include, author) with ?order=asc|desc"
+incremental_sync:
+  supported: true
+  recipe: >-
+    GET /wp/v2/posts?modified_after=<last-run ISO 8601>&orderby=modified&order=asc&per_page=100 —
+    then page with the Link rel="next" header until it is absent. Persist the highest `modified_gmt`
+    seen as the next cursor. Use `modified_gmt` (UTC), not `modified` (site local, UTC-7), or a
+    daylight-saving shift will silently skip or replay records.
+  verified: GET /wp/v2/posts?after=2026-01-01T00:00:00 returned X-WP-Total 1
+metadata:
+  meta_field: Present on every object but empty for anonymous callers — registered post meta is not exposed.
+  acf_field: >-
+    Advanced Custom Fields is installed and projects an `acf` key onto every object, but it is an
+    empty object on every collection checked anonymously. Do not build against it.
+request_tracing:
+  supported: false
+  detail: >-
+    No request-id header is returned. The edge is Cloudflare, so `cf-ray` is present on responses
+    and is the only correlator available — it is an edge trace, not an application request ID, and
+    the provider has no support channel that would accept it.
+versioning:
+  style: path-namespace
+  current: wp/v2
+  detail: >-
+    The version lives in the namespace segment (`/wp-json/wp/v2/...`). It is WordPress core's
+    version, not ReCode Therapeutics' — the company does not version, announce, or control this
+    contract. Site-specific custom post types (`events`, `values`) are registered INTO wp/v2, so
+    they can appear or disappear without any namespace change.
+  see: lifecycle/recode-therapeutics-lifecycle.yml
+error_envelope:
+  format: wordpress-rest (NOT RFC 9457)
+  media_type: application/json
+  discriminator: the `code` field
+  see: errors/recode-therapeutics-problem-types.yml
+rate_limiting:
+  documented: false
+  headers_observed: none
+  detail: >-
+    No RateLimit-* or X-RateLimit-* headers are returned and no limit is published. Traffic passes
+    through Cloudflare, so a consumer should assume an undocumented edge limit exists and back off
+    on 429 or on a non-JSON challenge response. Be conservative: this is a corporate marketing site
+    with no developer program and no support channel to appeal a block.
+caching:
+  detail: >-
+    Responses are served through Cloudflare with WP Engine's cache plugin active. Conditional
+    requests are the polite way to poll — but validate ETag/Last-Modified support at call time
+    rather than assuming it.
+content_negotiation:
+  formats: JSON only on wp/v2; the oEmbed endpoint additionally accepts ?format=xml.
+  jsonp: Not verified; WordPress supports ?_jsonp= where enabled.
+cors:
+  detail: WordPress sends Access-Control-Allow-Origin:* on REST responses by default; browser use is generally possible.
+cross_references:
+  errors: errors/recode-therapeutics-problem-types.yml
+  lifecycle: lifecycle/recode-therapeutics-lifecycle.yml
+  authentication: authentication/recode-therapeutics-authentication.yml
+  data_model: data-model/recode-therapeutics-data-model.yml
+  conformance: conformance/recode-therapeutics-conformance.yml
+docs: null
+docs_note: >-
+  ReCode Therapeutics publishes no API conventions guide. The upstream contract is
+  https://developer.wordpress.org/rest-api/using-the-rest-api/
+x-evidence:
+  verified: '2026-08-05'
+  method: live anonymous requests exercising each parameter and reading response headers

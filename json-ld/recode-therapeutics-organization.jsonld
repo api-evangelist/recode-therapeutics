@@ -1,0 +1,66 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://recodetx.com/#breadcrumblist",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "@id": "https://recodetx.com#listItem",
+          "position": 1,
+          "name": "Home"
+        }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://recodetx.com/#organization",
+      "name": "ReCode Therapeutics",
+      "description": "Powering the future of genetic medicines through superior delivery.",
+      "url": "https://recodetx.com/",
+      "telephone": "+14085851700",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://recodetx.com/wp-content/uploads/2022/06/ReCode_Logo_Primary_Web.svg",
+        "@id": "https://recodetx.com/#organizationLogo",
+        "width": 1920,
+        "height": 645
+      },
+      "image": {
+        "@id": "https://recodetx.com/#organizationLogo"
+      },
+      "sameAs": [
+        "https://twitter.com/ReCodeTx",
+        "https://www.linkedin.com/company/recode-therapeutics/"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://recodetx.com/#webpage",
+      "url": "https://recodetx.com/",
+      "name": "ReCode Therapeutics - Powering the future of genetic medicines through superior delivery",
+      "description": "ReCode is the first genetic medicines platform to enable highly targeted delivery to organs, tissues and cells beyond the liver. Our pipeline of rare disease therapeutics uses optimized mRNA and gene correction with redosing capability.",
+      "inLanguage": "en-US",
+      "isPartOf": {
+        "@id": "https://recodetx.com/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://recodetx.com/#breadcrumblist"
+      },
+      "datePublished": "2022-06-13T18:48:02-07:00",
+      "dateModified": "2025-08-15T10:44:32-07:00"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://recodetx.com/#website",
+      "url": "https://recodetx.com/",
+      "name": "ReCode Therapeutics",
+      "description": "Powering the future of genetic medicines through superior delivery.",
+      "inLanguage": "en-US",
+      "publisher": {
+        "@id": "https://recodetx.com/#organization"
+      }
+    }
+  ]
+}

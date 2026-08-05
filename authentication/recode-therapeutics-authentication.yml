@@ -1,0 +1,82 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/recode-therapeutics-content-openapi.yml
+summary: >-
+  The ReCode Therapeutics content API has NO consumer authentication. Every operation catalogued in
+  this repository was verified to return 200 anonymously with no header, no key, no token and no
+  cookie. There is no signup, no key issuance, no developer account and no rate-limit tier, because
+  ReCode Therapeutics does not run a developer program — this is the site's own WordPress REST
+  surface, left open by default.
+model: none
+public_read: true
+schemes: []
+declared_but_unusable:
+  - scheme: application-passwords
+    advertised_at: https://recodetx.com/wp-json/
+    field: authentication["application-passwords"].endpoints.authorization
+    authorization_endpoint: https://recodetx.com/wp-admin/authorize-application.php
+    usable_by_public: false
+    note: >-
+      The root index advertises WordPress Application Passwords. This is NOT a public API credential
+      — it is an interactive flow that requires an existing wp-admin account on the site to
+      approve. No unauthenticated consumer can obtain one, so it confers no additional access and is
+      recorded here only because the install advertises it.
+authorization_boundary:
+  description: >-
+    What the anonymous boundary actually gates, observed 2026-08-05. Read access to published
+    content is open; everything administrative is closed.
+  open_anonymously:
+    - /wp/v2/posts, /wp/v2/pages, /wp/v2/media
+    - /wp/v2/events, /wp/v2/values (site-specific custom post types)
+    - /wp/v2/categories, /wp/v2/tags, /wp/v2/types, /wp/v2/statuses, /wp/v2/taxonomies
+    - /wp/v2/search, /wp/v2/comments (empty)
+    - /wp/v2/users (5 records — see the personal-data note below)
+    - /oembed/1.0/embed
+  closed_401:
+    - path: /wp/v2/settings
+      code: rest_forbidden
+    - path: /wp/v2/menu-items
+      code: rest_cannot_view
+    - path: /wp/v2/themes
+      code: rest_cannot_view_themes
+    - path: /wp/v2/plugins
+      code: rest_cannot_view_plugins
+    - path: /wp/v2/templates
+      code: rest_cannot_manage_templates
+    - path: /wp/v2/block-patterns/patterns
+      code: rest_cannot_view
+    - path: /wp/v2/font-families
+      code: rest_cannot_read
+    - path: /wp/v2/elementor_library
+      code: rest_forbidden
+    - path: /wp-json/aioseo/v1/*
+      code: rest_forbidden
+    - path: /wp-json/elementor/v1/*, /wp-json/elementor-pro/v1/*, /wp-json/elementor-ai/v1/*
+      code: rest_forbidden
+    - path: /wp-json/redirection/v1/*
+      code: rest_forbidden
+    - path: /wp-json/wp-site-health/v1/*
+      code: rest_forbidden
+    - path: /wp-json/wp-abilities/v1/abilities
+      code: rest_forbidden
+      note: >-
+        The install registers the WordPress Abilities API — an agent-facing capability registry —
+        but it is closed to anonymous callers, so no agent surface is claimed for this provider.
+  write_operations: >-
+    All POST/PUT/PATCH/DELETE routes are registered by WordPress but require an authenticated,
+    capability-bearing user. None are reachable by a public consumer and none are modelled in the
+    OpenAPI.
+personal_data_note: >-
+  /wp/v2/users returns 200 anonymously with 5 author records (display name, slug, description,
+  public profile link, Gravatar URLs). Email addresses and roles are not exposed. API Evangelist
+  documents the exposure but packages no agent skill or MCP tool against it and names no
+  individual. If author enumeration is unintended, ReCode Therapeutics can close the collection
+  with a rest_endpoints filter or the equivalent WP Engine / security-plugin setting.
+docs: null
+docs_note: >-
+  ReCode Therapeutics publishes no authentication documentation because it publishes no developer
+  documentation at all. The governing contract is the upstream WordPress REST Handbook:
+  https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/
+x-evidence:
+  verified: '2026-08-05'
+  method: anonymous HTTP GET against every route, recording the status and error code returned

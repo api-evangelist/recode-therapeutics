@@ -1,0 +1,195 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/recode-therapeutics-content-openapi.yml
+summary: >-
+  The entity-relationship graph of the ReCode Therapeutics content API, derived from the object
+  shapes returned by the live surface and the `_links` relations WordPress emits. Identifiers are
+  bare integers scoped per post type — there are no prefixed or globally unique IDs, which is the
+  single most important thing a consumer must internalise.
+identifiers:
+  style: bare integer, auto-increment, shared sequence across post types
+  prefixes: none
+  detail: >-
+    Posts, pages, media, events and values all draw IDs from ONE underlying sequence, but each is
+    addressable only through its own collection route. ID 8252 is a post; GET /wp/v2/pages/8252
+    returns 404 rest_post_invalid_id. Always carry the post type alongside the ID.
+  stable_alternate_key: >-
+    `slug` is the durable, human-meaningful key and is filterable via `?slug=`. Prefer it for
+    anything persisted across runs.
+  observed_ids:
+    latest_post: 8252
+    latest_page: 8240
+    latest_media: 8238
+    latest_event: 8042
+    latest_value: 7546
+entities:
+  - name: Post
+    collection: /wp/v2/posts
+    count: 82
+    description: >-
+      Press releases, scientific publications, conference presentations and careers notices — the
+      company's entire news stream.
+    key_fields: [id, slug, title.rendered, content.rendered, excerpt.rendered, date_gmt, modified_gmt, link, status, author, featured_media, categories, tags]
+    notes: >-
+      content.rendered IS populated (5.7 KB on the most recent release), unlike many corporate
+      WordPress installs where page-builder meta swallows the body.
+  - name: Page
+    collection: /wp/v2/pages
+    count: 18
+    description: >-
+      The corporate site tree — Home, Our Purpose, Leadership, Careers & Culture, Science, Pipeline,
+      Patients, Cystic Fibrosis, Primary Ciliary Dyskinesia, News, Partnering, Terms & Conditions,
+      Privacy Policy, Cookie Policy.
+    key_fields: [id, slug, title.rendered, content.rendered, parent, menu_order, link, modified_gmt]
+    notes: Hierarchical. `parent` = 0 marks a top-level page; `menu_order` gives sibling ordering.
+  - name: MediaItem
+    collection: /wp/v2/media
+    count: 305
+    description: Logos, leadership headshots, conference posters and PDF decks.
+    key_fields: [id, source_url, mime_type, media_type, alt_text, filename, filesize, media_details.sizes, post]
+    notes: >-
+      `post` back-references the object the attachment is attached to (nullable). `media_details.sizes`
+      enumerates the generated image renditions.
+  - name: Event
+    collection: /wp/v2/events
+    count: 50
+    description: >-
+      Site-specific custom post type registered into wp/v2 — conference appearances, investor
+      presentations and scientific meetings.
+    key_fields: [id, slug, title.rendered, content.rendered, date_gmt, link, featured_media]
+    notes: Registers no taxonomies of its own. Appears in /wp/v2/search results under subtype `events`.
+  - name: Value
+    collection: /wp/v2/values
+    count: 6
+    description: Site-specific custom post type — the company's stated values, rendered on About / Careers & Culture.
+    key_fields: [id, slug, title.rendered, content.rendered, excerpt.rendered]
+  - name: Category
+    collection: /wp/v2/categories
+    count: 7
+    description: Hierarchical taxonomy applied to Post only.
+    key_fields: [id, slug, name, count, parent, taxonomy]
+    terms:
+      - {slug: press-releases, count: 47}
+      - {slug: featured, count: 14}
+      - {slug: presentations, count: 9}
+      - {slug: publications, count: 9}
+      - {slug: careers, count: 3}
+      - {slug: team, count: 0}
+      - {slug: uncategorized, count: 0}
+  - name: Tag
+    collection: /wp/v2/tags
+    count: 11
+    description: Flat taxonomy applied to Post only — predominantly scientific-conference labels.
+    key_fields: [id, slug, name, count, taxonomy]
+    terms:
+      - {slug: featured, count: 6}
+      - {slug: american-thoracic-society-ats, count: 4}
+      - {slug: gordon-research-conferences, count: 2}
+      - {slug: nacfc, count: 1}
+      - {slug: north-american-cystic-fibrosis-conference, count: 1}
+      - {slug: journal-of-cystic-fibrosis, count: 1}
+      - {slug: pnas, count: 1}
+      - {slug: j-p-morgan, count: 1}
+      - {slug: cilia2022, count: 1}
+      - {slug: american-thoracic-society, count: 0}
+  - name: User
+    collection: /wp/v2/users
+    count: 5
+    description: >-
+      Site author records. PERSONAL DATA — documented, but deliberately excluded from every agent
+      skill in this repository and never enumerated here. See the x-personal-data annotation on
+      listUsers in the OpenAPI.
+    key_fields: [id, name, slug, description, link, avatar_urls]
+  - name: SearchResult
+    collection: /wp/v2/search
+    description: >-
+      A lightweight projection across every REST-exposed post type. Not a stored entity — a view.
+      Carries only id/title/url/type/subtype; resolve `subtype` to the owning collection to fetch
+      the full record.
+  - name: TypeDescriptor
+    collection: /wp/v2/types
+    count: 21
+    description: Metadata about each registered post type — the self-describing layer of the API.
+  - name: TaxonomyDescriptor
+    collection: /wp/v2/taxonomies
+    count: 6
+relationships:
+  - from: Post
+    to: User
+    type: belongs_to
+    via: author
+    resolve: GET /wp/v2/users/{author}
+    link_rel: author
+    note: Traverses into personal data. Use _fields to project `author` away when it is not needed.
+  - from: Post
+    to: MediaItem
+    type: has_one
+    via: featured_media
+    resolve: GET /wp/v2/media/{featured_media}
+    link_rel: wp:featuredmedia
+    note: 0 means no featured image.
+  - from: Post
+    to: Category
+    type: has_many
+    via: categories
+    resolve: GET /wp/v2/categories?include={ids}
+    link_rel: wp:term
+  - from: Post
+    to: Tag
+    type: has_many
+    via: tags
+    resolve: GET /wp/v2/tags?include={ids}
+    link_rel: wp:term
+  - from: Page
+    to: Page
+    type: belongs_to
+    via: parent
+    resolve: GET /wp/v2/pages/{parent}
+    note: Self-referencing hierarchy. parent = 0 is the root sentinel, not a real page ID.
+  - from: Page
+    to: MediaItem
+    type: has_one
+    via: featured_media
+  - from: Page
+    to: User
+    type: belongs_to
+    via: author
+  - from: MediaItem
+    to: Post
+    type: belongs_to
+    via: post
+    resolve: GET /wp/v2/posts/{post} or /wp/v2/pages/{post}
+    note: >-
+      Nullable, and NOT type-discriminated — the ID may belong to a post, a page, or a custom post
+      type. Resolve by trying the owning collection, or read the `_links.about` relation instead.
+  - from: Event
+    to: MediaItem
+    type: has_one
+    via: featured_media
+  - from: Category
+    to: Category
+    type: belongs_to
+    via: parent
+    note: Hierarchical taxonomy; parent = 0 for a top-level term.
+  - from: SearchResult
+    to: Post|Page|Event|Value
+    type: belongs_to
+    via: id + subtype
+    note: >-
+      `subtype` is the discriminator that tells you which collection to resolve `id` against. Without
+      it the bare id is ambiguous.
+traversal_notes:
+  - >-
+    `_embed` collapses the author / featured-media / term hops into an `_embedded` block on the
+    parent object, turning an N+1 walk into one request. Prefer it for any graph traversal.
+  - >-
+    `_links.curies` maps the `wp:` prefix used by wp:featuredmedia, wp:term and wp:attachment. The
+    relations are discoverable at runtime; nothing needs to be hard-coded.
+  - >-
+    Taxonomy counts and post counts disagree in one place worth knowing: category counts sum to more
+    than 82 because `featured` overlaps the other categories.
+render: null
+render_note: No subway/ diagram exists for this provider.
+x-evidence:
+  verified: '2026-08-05'
+  method: object shapes and counts read from live anonymous responses

@@ -1,0 +1,84 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — ReCode Therapeutics Content API
+  version: 1.0.0
+  description: >-
+    An OpenAPI Overlay 1.0.0 document capturing the enhancements API Evangelist applies on top of
+    the ReCode Therapeutics content contract. The base spec
+    (openapi/recode-therapeutics-content-openapi.yml) is itself derived from the route index the
+    site publishes at https://recodetx.com/wp-json/ — ReCode Therapeutics publishes no OpenAPI of
+    its own. This overlay records the judgements API Evangelist layered on: the personal-data
+    warning on the author collection, the consumer-facing operating notes that no provider
+    documentation supplies, and the tag descriptions.
+
+
+    Applying this overlay is not required to call the API. It exists so the enhancements are
+    auditable and separable from the observed contract, and so a future round can re-derive the base
+    spec from a fresh route index without losing them.
+extends: ../openapi/recode-therapeutics-content-openapi.yml
+actions:
+  - target: $.info
+    description: Record that no provider-published contract exists and that this one is derived.
+    update:
+      x-api-evangelist:
+        derived_by: API Evangelist enrichment pipeline
+        derived_from: https://recodetx.com/wp-json/
+        verified: '2026-08-05'
+        provider_publishes_openapi: false
+        provider_developer_program: false
+        caution: >-
+          This is the site's own WordPress REST surface, not a product API. There is no SLA, no
+          status page, no versioning policy, no changelog and no support channel. Treat it as an
+          unmanaged public read surface.
+
+  - target: $.paths['/wp/v2/users'].get
+    description: >-
+      Attach the personal-data warning to the author collection. This is the enhancement that most
+      matters — the operation returns identifiable people and the provider documents nothing.
+    update:
+      x-api-evangelist-caution: >-
+        Author enumeration is open on this install. Retrieving or storing these records is personal
+        data processing under UK/EU GDPR. API Evangelist packages no agent skill and no MCP tool
+        against this operation, and names no individual from it anywhere in this repository.
+
+  - target: $.paths['/wp/v2/posts'].get
+    description: Add the incremental-sync recipe that the provider documents nowhere.
+    update:
+      x-api-evangelist-recipe:
+        name: incremental-sync
+        request: /wp/v2/posts?modified_after={cursor}&orderby=modified&order=asc&per_page=100
+        cursor_field: modified_gmt
+        note: >-
+          Use modified_gmt (UTC), not modified (site local, UTC-7), or a daylight-saving shift will
+          silently skip or replay records. Follow the Link rel="next" header until absent.
+
+  - target: $.paths['/wp/v2/media'].get
+    description: Note the projection that keeps a media walk affordable.
+    update:
+      x-api-evangelist-recipe:
+        name: cheap-media-index
+        request: /wp/v2/media?_fields=id,source_url,mime_type,alt_text,title,post&per_page=100
+        note: >-
+          305 items over 4 pages. Without _fields each item carries the full media_details.sizes
+          rendition map.
+
+  - target: $.paths['/wp/v2/search'].get
+    description: Record the subtype discriminator rule.
+    update:
+      x-api-evangelist-note: >-
+        The `subtype` field is the discriminator that tells you which collection to resolve `id`
+        against — posts, pages, events or values. A bare search hit id is ambiguous without it.
+
+  - target: $.tags[?(@.name=='people')]
+    description: Reinforce the personal-data boundary at the tag level.
+    update:
+      x-api-evangelist-caution: >-
+        Every operation under this tag returns records about identifiable people. Excluded from all
+        packaged skills.
+
+  - target: $.components.schemas.Error
+    description: State plainly that this is not RFC 9457, since agents commonly assume it is.
+    update:
+      x-api-evangelist-note: >-
+        NOT RFC 9457. Media type is application/json, not application/problem+json. Branch on the
+        `code` slug; never match on `message`, which repeats verbatim across unrelated namespaces.

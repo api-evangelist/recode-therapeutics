@@ -1,0 +1,79 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/recode-therapeutics-content-openapi.yml
+summary: >-
+  ReCode Therapeutics publishes no API lifecycle commitments of any kind — no versioning policy, no
+  deprecation policy, no sunset headers, no SLA, no status page and no changelog. This is expected:
+  the company runs no developer program, and the content API catalogued here is an artifact of its
+  WordPress install rather than a product it manages. Everything below records absence that was
+  actually checked, not absence assumed.
+versioning:
+  policy_published: false
+  scheme: path-namespace (`/wp-json/wp/v2/...`)
+  current_version: wp/v2
+  owner: WordPress core — not ReCode Therapeutics
+  detail: >-
+    The version segment tracks the WordPress REST API, which the company neither authors nor
+    announces. A WordPress core upgrade, a plugin change, or a theme change can add, remove or
+    alter routes with no notice and no version bump, because the site-specific custom post types
+    (`events`, `values`, `portfolio`) are registered INTO the wp/v2 namespace rather than a
+    namespace of their own.
+  consumer_implication: >-
+    Treat this contract as unversioned in practice. Re-read GET /wp-json/ before each run and
+    compare the registered route set; do not assume last week's routes still exist.
+deprecation:
+  policy_published: false
+  sunset_header: not observed
+  deprecation_header: not observed
+  rfc8594_support: false
+  deprecated_operations: []
+  detail: >-
+    No RFC 8594 Sunset or Deprecation headers were returned on any response. No operation in the
+    OpenAPI is marked deprecated, because there is no source that would mark one.
+status_page:
+  published: false
+  checked:
+    - url: https://status.recodetx.com/
+      result: no TLS-valid host (wildcard DNS answers, certificate does not cover the name)
+    - url: https://recodetx.com/status
+      result: not published
+  detail: >-
+    No status page, no uptime history, no incident feed. There is no channel on which a consumer
+    would learn that this surface is down or has changed.
+sla:
+  published: false
+  uptime_commitment: null
+  support_channel_for_api: null
+  detail: >-
+    No SLA and no API support channel. The site lists partnering, investor-relations and media
+    email addresses only — none of which are a developer contact.
+changelog:
+  api_changelog_published: false
+  detail: >-
+    No dated API changelog exists. The company does publish a dated NEWS stream (82 press releases
+    and publications at /news/, with an RSS feed at /feed/) — that is corporate news about the
+    drug pipeline, not a record of API change, and it is catalogued as content rather than as a
+    ChangeLog artifact. Claiming it as one would be false.
+observed_activity:
+  content_last_modified: '2026-05-20T13:03:01'
+  note: >-
+    Derived from the most recent post's `modified` field. Useful as a liveness signal for the
+    content, not as a signal about the API contract.
+  homepage_date_modified: '2025-08-15T10:44:32-07:00'
+  homepage_date_published: '2022-06-13T18:48:02-07:00'
+  source_for_homepage_dates: schema.org WebPage node in the site's JSON-LD graph
+stability_assessment:
+  grade: unmanaged
+  rationale: >-
+    A stable, long-lived surface in practice (WordPress REST has been backward-compatible for
+    years) but with zero contractual backing from ReCode Therapeutics. A consumer gets no notice,
+    no versioning, no status signal and no support. Suitable for polite, low-frequency,
+    fault-tolerant reads; unsuitable for anything with an availability requirement.
+cross_references:
+  conventions: conventions/recode-therapeutics-conventions.yml
+  conformance: conformance/recode-therapeutics-conformance.yml
+x-evidence:
+  checked: '2026-08-05'
+  method: >-
+    Response-header inspection on every catalogued operation (no Sunset/Deprecation/RateLimit
+    headers present), plus probes of the status-page and changelog paths listed above.

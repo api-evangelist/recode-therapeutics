@@ -1,0 +1,134 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/recode-therapeutics-content-openapi.yml
+summary: >-
+  The ReCode Therapeutics content API uses the WordPress REST error envelope, not RFC 9457. Errors
+  are returned as `application/json` (never `application/problem+json`) with a WordPress-specific
+  shape. Every entry below was observed live against recodetx.com on 2026-08-05 — none are inferred
+  from documentation, because the provider publishes none.
+format: wordpress-rest
+rfc9457: false
+envelope:
+  media_type: application/json
+  shape:
+    code: A machine-readable WordPress error slug — the field a consumer should branch on.
+    message: A human-readable English sentence. Not stable; do not match on it.
+    data.status: The HTTP status, repeated inside the body.
+    data.params: Present on validation failures — maps the offending parameter to its reason.
+    data.details: Present on validation failures — the full validation detail per parameter.
+  example:
+    code: rest_invalid_param
+    message: 'Invalid parameter(s): per_page'
+    data:
+      status: 400
+problem_types:
+  - code: rest_invalid_param
+    status: 400
+    title: A query parameter failed validation
+    observed_at: GET /wp/v2/posts?per_page=101
+    detail: >-
+      Returned when any query parameter is outside its registered bounds or enum. The offending
+      parameter names are listed in `data.params`.
+    remediation: >-
+      Read `data.params` to find which parameter was rejected. For collections the common cause is
+      per_page above the hard maximum of 100 — paginate with `page` instead.
+    retryable: false
+  - code: rest_post_invalid_id
+    status: 404
+    title: No object exists with that ID in this collection
+    observed_at: GET /wp/v2/posts/99999999
+    detail: >-
+      Returned by every post-type item route (posts, pages, media, events, values) when the ID does
+      not resolve, is not published, or belongs to a different post type.
+    remediation: >-
+      Resolve IDs from a collection listing or from /wp/v2/search rather than guessing. Note that an
+      ID valid in one collection 404s in another — /wp/v2/pages/{postId} will not find a post.
+    retryable: false
+  - code: rest_term_invalid
+    status: 404
+    title: No term exists with that ID in this taxonomy
+    detail: Returned by /wp/v2/categories/{id} and /wp/v2/tags/{id} for an unknown term.
+    remediation: List the taxonomy first; there are only 7 categories and 11 tags.
+    retryable: false
+  - code: rest_no_route
+    status: 404
+    title: No route matches this URL and method
+    observed_at: GET /wp-json/wp/v2/global-styles/themes
+    detail: >-
+      The path is not registered at all, or is registered for a different HTTP method. Distinguishes
+      "this endpoint does not exist" from "this object does not exist".
+    remediation: >-
+      Check the route index at GET /wp-json/ (or GET /wp-json/wp/v2) — it enumerates every
+      registered route and its permitted methods.
+    retryable: false
+  - code: rest_forbidden
+    status: 401
+    title: The route requires an authenticated user with capabilities
+    observed_at: >-
+      GET /wp/v2/settings; GET /wp-json/aioseo/v1/options; GET /wp-json/wp-abilities/v1/abilities;
+      GET /wp-json/elementor/v1/globals; GET /wp-json/redirection/v1/redirect;
+      GET /wp-json/wp-site-health/v1/tests/background-updates
+    detail: >-
+      The generic administrative denial. Note the status is 401 and not 403, and note that the
+      message "Sorry, you are not allowed to do that." is identical across unrelated namespaces —
+      branch on `code` plus the request path, never on `message`.
+    remediation: >-
+      There is no public credential that lifts this. These routes are administrative and are not
+      part of the consumable surface.
+    retryable: false
+  - code: rest_cannot_view
+    status: 401
+    title: The collection is registered but not viewable anonymously
+    observed_at: GET /wp/v2/menu-items; GET /wp/v2/block-patterns/patterns
+    detail: A capability-specific variant of rest_forbidden for read-only collections.
+    remediation: Not publicly accessible. Use /wp/v2/pages hierarchy to reconstruct site structure instead of menu-items.
+    retryable: false
+  - code: rest_cannot_view_themes
+    status: 401
+    title: Theme metadata requires an authenticated user
+    observed_at: GET /wp/v2/themes
+    retryable: false
+  - code: rest_cannot_view_plugins
+    status: 401
+    title: Plugin metadata requires an authenticated user
+    observed_at: GET /wp/v2/plugins
+    retryable: false
+  - code: rest_cannot_manage_templates
+    status: 401
+    title: Block templates require an authenticated user
+    observed_at: GET /wp/v2/templates
+    retryable: false
+  - code: rest_cannot_read
+    status: 401
+    title: Font families require an authenticated user
+    observed_at: GET /wp/v2/font-families
+    retryable: false
+  - code: oembed_invalid_url
+    status: 404
+    title: The URL is not hosted on this site
+    observed_at: GET /oembed/1.0/embed?url=https%3A%2F%2Fexample.com%2F
+    detail: >-
+      The oEmbed provider endpoint only resolves URLs under recodetx.com. Note the message is the
+      bare string "Not Found" — the `code` is the only useful discriminator.
+    remediation: Pass a recodetx.com URL.
+    retryable: false
+non_errors:
+  - condition: GET /wp/v2/comments returns 200 with an empty array and X-WP-Total 0
+    note: >-
+      Commenting is unused on this site. An empty array is the correct, permanent answer — not a
+      transient failure. Do not retry.
+  - condition: GET /wp/v2/portfolio and /wp/v2/navigation return 200 with empty arrays
+    note: >-
+      The post types are registered by the theme but carry no content. Same as above — empty is the
+      answer, not an error.
+consumer_guidance:
+  - Branch on the `code` string, never on `message` — messages are English prose and repeat verbatim across unrelated namespaces.
+  - 401 here means "administrative, no public credential exists", not "your token expired". Do not implement a refresh-and-retry loop against it.
+  - There is no documented rate-limit error. The edge is Cloudflare, so a consumer should still be prepared for a 429 or a 5xx challenge page that is NOT in the WordPress envelope shape.
+docs: null
+docs_note: >-
+  ReCode Therapeutics publishes no error reference. The upstream contract for these slugs is the
+  WordPress REST Handbook: https://developer.wordpress.org/rest-api/using-the-rest-api/
+x-evidence:
+  verified: '2026-08-05'
+  method: live anonymous requests; every status and code above was returned by the server
