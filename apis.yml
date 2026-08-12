@@ -42,34 +42,14 @@ tags:
 apis:
 - aid: recode-therapeutics:recode-therapeutics-content-api
   name: ReCode Therapeutics Content API
-  description: >-
-    The anonymously readable WordPress REST API behind recodetx.com. It exposes 82 press releases,
-    scientific publications and conference presentations; the 18 corporate pages (Our Purpose,
-    Leadership, Careers & Culture, Science, Pipeline, Clinical Studies, Patients, Cystic Fibrosis,
-    Primary Ciliary Dyskinesia, Partnering, News, Media Library and the legal set); a 305-item media
-    library carrying the ATS conference posters and investor decks as PDFs; two site-specific custom
-    post types registered into wp/v2 — `events` (50 conference and investor appearances) and
-    `values` (6 stated company values); the category and tag taxonomies; the registered
-    type/status/taxonomy descriptors; cross-content search; and the oEmbed 1.0 provider endpoint.
-    Unlike many corporate WordPress installs, `content.rendered` IS populated on posts and pages
-    here, so the API returns real prose rather than identity metadata alone. This is not a developer
-    product ReCode Therapeutics markets — it is the site's own content surface, registered at
-    /wp-json/ and verified to return data without credentials. The OpenAPI in this repository is
-    derived from the published route index and models only the operations that actually answered
-    anonymously.
+  description: Press releases, publications, corporate pages and site-specific custom post types.
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://recodetx.com/wp-json
   tags:
   - content
-  - wordpress
-  - corporate
-  - media
-  - events
   properties:
   - type: OpenAPI
-    url: openapi/recode-therapeutics-content-openapi.yml
-  - type: Overlay
-    url: overlays/recode-therapeutics-content-overlay.yaml
+    url: openapi/recode-therapeutics-content-api-openapi.yml
   - type: Authentication
     url: authentication/recode-therapeutics-authentication.yml
   - type: ErrorCatalog
@@ -80,36 +60,134 @@ apis:
     url: data-model/recode-therapeutics-data-model.yml
   - type: Lifecycle
     url: lifecycle/recode-therapeutics-lifecycle.yml
-  - type: AgentSkill
-    url: skills/_index.yml
-  x-contract-provenance: >-
-    Derived by the API Evangelist enrichment pipeline from the WordPress REST route index the site
-    publishes at https://recodetx.com/wp-json/ — 376 routes across the namespaces oembed/1.0,
-    wpe/cache-plugin/v1, wpe_sign_on_plugin/v1, aioseo/v1, jupiterx-license, redirection/v1,
-    complianz/v1, elementor/v1, monsterinsights/v1, elementor/v1/documents, elementor-ai/v1,
-    elementor-pro/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1 and wp-abilities/v1 — and
-    verified against live anonymous responses on 2026-08-05. Only the 27 operations that returned
-    data without credentials are modelled. Every write route and every administrative namespace
-    returns 401 anonymously and is deliberately omitted rather than documented as a capability.
-    Notably the install registers the WordPress Abilities API (`wp-abilities/v1`), an agent-facing
-    capability registry, but /wp-json/wp-abilities/v1/abilities returns 401 rest_forbidden, so no
-    agent surface is claimed here. /wp/v2/settings, /wp/v2/menu-items, /wp/v2/themes,
-    /wp/v2/plugins, /wp/v2/templates, /wp/v2/block-patterns/patterns, /wp/v2/font-families and
-    /wp/v2/elementor_library all return 401. /wp/v2/comments, /wp/v2/portfolio and /wp/v2/navigation
-    return 200 with empty collections. One exposure is recorded rather than exploited:
-    /wp/v2/users returns 200 with 5 identifiable author records anonymously; it is documented in the
-    OpenAPI with an x-personal-data annotation and a remediation note, and is deliberately excluded
-    from every packaged Agent Skill. ReCode Therapeutics publishes no developer documentation, no
-    API reference, no getting-started guide, no status page, no changelog and no developer support
-    channel, so no Documentation/APIReference/GettingStarted/DeveloperPortal/StatusPage/ChangeLog
-    pointers are emitted; the humanURL above is the upstream WordPress REST handbook that defines
-    the wp/v2 contract.
+- aid: recode-therapeutics:recode-therapeutics-discovery-api
+  name: ReCode Therapeutics Discovery API
+  description: Route index and namespace metadata the install publishes about itself.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://recodetx.com/wp-json
+  tags:
+  - discovery
+  properties:
+  - type: OpenAPI
+    url: openapi/recode-therapeutics-discovery-api-openapi.yml
+  - type: Authentication
+    url: authentication/recode-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/recode-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/recode-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/recode-therapeutics-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/recode-therapeutics-lifecycle.yml
+- aid: recode-therapeutics:recode-therapeutics-embed-api
+  name: ReCode Therapeutics Embed API
+  description: oEmbed 1.0 provider endpoint for recodetx.com URLs.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://recodetx.com/wp-json
+  tags:
+  - embed
+  properties:
+  - type: OpenAPI
+    url: openapi/recode-therapeutics-embed-api-openapi.yml
+  - type: Authentication
+    url: authentication/recode-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/recode-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/recode-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/recode-therapeutics-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/recode-therapeutics-lifecycle.yml
+- aid: recode-therapeutics:recode-therapeutics-media-api
+  name: ReCode Therapeutics Media API
+  description: The media library — images, PDFs, posters and decks attached to the site.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://recodetx.com/wp-json
+  tags:
+  - media
+  properties:
+  - type: OpenAPI
+    url: openapi/recode-therapeutics-media-api-openapi.yml
+  - type: Authentication
+    url: authentication/recode-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/recode-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/recode-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/recode-therapeutics-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/recode-therapeutics-lifecycle.yml
+- aid: recode-therapeutics:recode-therapeutics-people-api
+  name: ReCode Therapeutics People API
+  description: Author records. Personal data — read the x-personal-data annotation before use.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://recodetx.com/wp-json
+  tags:
+  - people
+  properties:
+  - type: OpenAPI
+    url: openapi/recode-therapeutics-people-api-openapi.yml
+  - type: Authentication
+    url: authentication/recode-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/recode-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/recode-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/recode-therapeutics-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/recode-therapeutics-lifecycle.yml
+- aid: recode-therapeutics:recode-therapeutics-search-api
+  name: ReCode Therapeutics Search API
+  description: Cross-content search across every REST-exposed post type.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://recodetx.com/wp-json
+  tags:
+  - search
+  properties:
+  - type: OpenAPI
+    url: openapi/recode-therapeutics-search-api-openapi.yml
+  - type: Authentication
+    url: authentication/recode-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/recode-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/recode-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/recode-therapeutics-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/recode-therapeutics-lifecycle.yml
+- aid: recode-therapeutics:recode-therapeutics-taxonomy-api
+  name: ReCode Therapeutics Taxonomy API
+  description: Categories, tags, and the registered type/status/taxonomy descriptors.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://recodetx.com/wp-json
+  tags:
+  - taxonomy
+  properties:
+  - type: OpenAPI
+    url: openapi/recode-therapeutics-taxonomy-api-openapi.yml
+  - type: Authentication
+    url: authentication/recode-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/recode-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/recode-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/recode-therapeutics-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/recode-therapeutics-lifecycle.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/recode-therapeutics-content-overlay.yaml
 - type: DomainSecurity
   url: security/recode-therapeutics-domain-security.yml
 - type: Website
