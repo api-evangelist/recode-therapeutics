@@ -1,0 +1,170 @@
+{
+  "item": [
+    {
+      "id": "e66933a6-8755-4796-a38c-aa3dc79a5fcc",
+      "name": "search",
+      "description": {
+        "content": "Cross-content search across every REST-exposed post type.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bea6d50c-b67c-4105-a1a7-2b986b46a543",
+          "name": "Search across every REST-exposed post type",
+          "request": {
+            "name": "Search across every REST-exposed post type",
+            "description": {
+              "content": "Returns lightweight hits (id, title, url, type, subtype) across posts and the custom types. A search for `mrna` returned 79 hits spanning the `post` and `events` subtypes at verification. Use `subtype` to constrain to one collection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "(Required) The search term."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "post",
+                  "description": "Object type to search — `post` (any post type) or `term`."
+                },
+                {
+                  "disabled": false,
+                  "key": "subtype",
+                  "value": "<string>",
+                  "description": "Restrict to a registered subtype, e.g. `post`, `page`, `events`, `values`."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "1-based page of the collection to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7b4e45c1-f360-445e-a644-f38315af1cb6",
+              "name": "Search hits.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "post"
+                    },
+                    {
+                      "key": "subtype",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Total number of items in the unpaged collection.",
+                  "key": "X-WP-Total",
+                  "value": "805"
+                },
+                {
+                  "disabled": false,
+                  "description": "Total number of pages available at the current per_page.",
+                  "key": "X-WP-TotalPages",
+                  "value": "805"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 6116,\n    \"title\": \"string\",\n    \"url\": \"https://XNMRObkQwdHyiFfTTVKa.lmGkESfFBpaBbcqOdWoJqb\",\n    \"type\": \"term\",\n    \"subtype\": \"string\",\n    \"_links\": {\n      \"key_0\": 4317.733239495156,\n      \"key_1\": 5420.1123434226765\n    }\n  },\n  {\n    \"id\": 5479,\n    \"title\": \"string\",\n    \"url\": \"http://kcanDDaqPvbfteCfvjR.lrbDYgJQEhU\",\n    \"type\": \"post\",\n    \"subtype\": \"string\",\n    \"_links\": {\n      \"key_0\": false\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://recodetx.com/wp-json",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "74f11bd6-da6a-4e7d-b272-6290dc74617a",
+    "name": "ReCode Therapeutics Content Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "ReCode Therapeutics runs no developer program and markets no product API. The only machine-readable contract reachable from the public internet without credentials is the WordPress REST API registered at https://recodetx.com/wp-json/, which the site publishes as a consequence of running WordPress on WP Engine behind Cloudflare.\n\nThis document is DERIVED by the API Evangelist enrichment pipeline from the route index the site itself publishes at https://recodetx.com/wp-json/ (376 routes across 16 namespaces) and was verified against live anonymous responses on 2026-08-05. **Only operations that actually returned data without credentials are modelled here.** Everything write-side (POST/PUT/PATCH/ DELETE on every collection), and the administrative namespaces the site also registers (`aioseo/v1`, `elementor/v1`, `elementor-pro/v1`, `elementor-ai/v1`, `redirection/v1`, `wpe_sign_on_plugin/v1`, `wp-site-health/v1`, `wp-block-editor/v1`, `wp-abilities/v1`), return 401 `rest_forbidden` anonymously and are deliberately omitted rather than documented as capabilities.\n\nWhat the surface actually yields: 82 press releases and publications, 18 corporate pages, a 305-item media library, two site-specific custom post types registered into `wp/v2` (`events`, 50 items — conference and investor appearances; and `values`, 6 items — the company's stated values), the category and tag taxonomies, the registered type/status/taxonomy metadata, cross-content search, and the oEmbed 1.0 provider endpoint. Unlike many corporate WordPress installs, `content.rendered` IS populated on posts and pages here (5.7 KB on the most recent press release, 53 KB on the home page), so the API returns real prose and not just identity metadata.\n\nNote on `/wp/v2/users`: the site leaves author enumeration open, and the collection returns 200 with 5 author records anonymously. The operation is documented here because it is genuinely part of the observed surface, but API Evangelist deliberately packages no agent skill and no MCP tool against it, and records no individual from it. See `x-personal-data` on that operation.\n\nContact Support:\n Name: ReCode Therapeutics",
+      "type": "text/plain"
+    }
+  }
+}

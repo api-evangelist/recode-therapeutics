@@ -1,0 +1,218 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ReCode Therapeutics Content Taxonomy API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "taxonomy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List post categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/categories",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to one or more slugs."
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+              }
+            ]
+          },
+          "docs": "7 terms at verification — press-releases (47), featured (14), presentations (9), publications (9), careers (3), team (0), uncategorized (0)."
+        },
+        {
+          "info": {
+            "name": "Get a single category term",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/categories/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object's unique numeric identifier."
+              }
+            ]
+          },
+          "docs": "Get a single category term"
+        },
+        {
+          "info": {
+            "name": "List post tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/tags",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to one or more slugs."
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+              }
+            ]
+          },
+          "docs": "11 terms at verification, mostly scientific-conference labels — american-thoracic-society-ats, nacfc, north-american-cystic-fibrosis-conference, gordon-research-conferences, pnas, journal-of-cystic-fibrosis, j-p-morgan, cilia2022, featured."
+        },
+        {
+          "info": {
+            "name": "Get a single tag term",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/tags/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object's unique numeric identifier."
+              }
+            ]
+          },
+          "docs": "Get a single tag term"
+        },
+        {
+          "info": {
+            "name": "List registered post types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/types"
+          },
+          "docs": "21 registered types. Beyond WordPress core, the install registers `events`, `values` and `portfolio` (site content) plus Elementor and Jupiter X builder types whose collections are either empty or 401 anonymously."
+        },
+        {
+          "info": {
+            "name": "Get a single post-type descriptor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/types/:type",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "The post-type slug, e.g. `post`, `page`, `events`, `values`."
+              }
+            ]
+          },
+          "docs": "Get a single post-type descriptor"
+        },
+        {
+          "info": {
+            "name": "List registered taxonomies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/taxonomies"
+          },
+          "docs": "6 taxonomies — category, post_tag, nav_menu, wp_pattern_category, portfolio_category, portfolio_tag."
+        },
+        {
+          "info": {
+            "name": "Get a single taxonomy descriptor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/taxonomies/:taxonomy",
+            "params": [
+              {
+                "name": "taxonomy",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single taxonomy descriptor"
+        },
+        {
+          "info": {
+            "name": "List publicly visible post statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/statuses"
+          },
+          "docs": "Two statuses are exposed anonymously — `publish` and `acf-disabled`. Draft, pending, private, future and trash are not returned to an unauthenticated caller."
+        },
+        {
+          "info": {
+            "name": "Get a single status descriptor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/statuses/:status",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single status descriptor"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,35 @@
+{
+  "provider": "recode-therapeutics",
+  "sources": [
+    "recode-therapeutics-content-api-openapi.yml",
+    "recode-therapeutics-discovery-api-openapi.yml",
+    "recode-therapeutics-embed-api-openapi.yml",
+    "recode-therapeutics-media-api-openapi.yml",
+    "recode-therapeutics-people-api-openapi.yml",
+    "recode-therapeutics-search-api-openapi.yml",
+    "recode-therapeutics-taxonomy-api-openapi.yml"
+  ],
+  "outputs": [
+    "recode-therapeutics-content-api-openapi.yml",
+    "recode-therapeutics-discovery-api-openapi.yml",
+    "recode-therapeutics-embed-api-openapi.yml",
+    "recode-therapeutics-media-api-openapi.yml",
+    "recode-therapeutics-people-api-openapi.yml",
+    "recode-therapeutics-search-api-openapi.yml",
+    "recode-therapeutics-taxonomy-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "recode-therapeutics-content-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "recode-therapeutics-discovery-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "recode-therapeutics-embed-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "recode-therapeutics-media-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "recode-therapeutics-people-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "recode-therapeutics-search-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "recode-therapeutics-taxonomy-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

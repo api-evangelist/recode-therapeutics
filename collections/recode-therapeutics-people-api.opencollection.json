@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ReCode Therapeutics Content People API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "people",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List site authors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/users",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+              }
+            ]
+          },
+          "docs": "Returns 200 with 5 author records anonymously — author enumeration is left open on this install. Each record carries `id`, `name`, `slug`, `description`, `link`, `url` and Gravatar `avatar_urls`. Email addresses and roles are NOT exposed."
+        },
+        {
+          "info": {
+            "name": "Get a single author record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/users/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object's unique numeric identifier."
+              }
+            ]
+          },
+          "docs": "Get a single author record"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1055 @@
+{
+  "item": [
+    {
+      "id": "a29ef9e2-a60c-47c0-a3b4-30bd59eadd4f",
+      "name": "taxonomy",
+      "description": {
+        "content": "Categories, tags, and the registered type/status/taxonomy descriptors.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6a4d49f2-60df-4732-ab39-dca45da6bd83",
+          "name": "List post categories",
+          "request": {
+            "name": "List post categories",
+            "description": {
+              "content": "7 terms at verification — press-releases (47), featured (14), presentations (9), publications (9), careers (3), team (0), uncategorized (0).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "categories"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "1-based page of the collection to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit results to one or more slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit results to one or more slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "_fields",
+                  "value": "<string>",
+                  "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "852ba08f-a91b-43f0-bb75-95d49f6a378d",
+              "name": "Category terms.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "categories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "_fields",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Total number of items in the unpaged collection.",
+                  "key": "X-WP-Total",
+                  "value": "7128"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 8230,\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"taxonomy\": \"post_tag\",\n    \"count\": 822,\n    \"description\": \"string\",\n    \"link\": \"http://aeIHlQoxzkAZDvqMGWXaEquLzYNyLDMM.skxuimjiql3PyGQF9G8zPyzS3xoFopw85xL\",\n    \"parent\": 1845,\n    \"meta\": {},\n    \"_links\": {\n      \"key_0\": 2083.9195454861424\n    }\n  },\n  {\n    \"id\": 4807,\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"taxonomy\": \"post_tag\",\n    \"count\": 9599,\n    \"description\": \"string\",\n    \"link\": \"http://RBXanquQyvdZETVvJyjByf.zvhmkB8LugeRrdWWDEt92XmSZT,,S5FLZsIwHl7X\",\n    \"parent\": 722,\n    \"meta\": {},\n    \"_links\": {\n      \"key_0\": \"string\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b7779b82-4a2a-4e50-bc91-72c145e386af",
+          "name": "Get a single category term",
+          "request": {
+            "name": "Get a single category term",
+            "description": {},
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "categories",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The object's unique numeric identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "03886b10-fff6-4f94-91bf-92f2e8791f77",
+              "name": "The category term.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "categories",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The object's unique numeric identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 339,\n  \"name\": \"string\",\n  \"slug\": \"string\",\n  \"taxonomy\": \"category\",\n  \"count\": 9933,\n  \"description\": \"string\",\n  \"link\": \"https://biUfLWWOyMnXP.vqrpV0y967fglN0Ud5C1dDDmXEbyahR\",\n  \"parent\": 7286,\n  \"meta\": {},\n  \"_links\": {\n    \"key_0\": 1873.28282110913,\n    \"key_1\": \"string\",\n    \"key_2\": 2315.9880353948324\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e44f373e-12fe-46d3-9bcf-985c86be9f58",
+              "name": "No term exists with that ID in this taxonomy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "categories",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The object's unique numeric identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rest_term_invalid\",\n  \"message\": \"Term does not exist.\",\n  \"data\": {\n    \"status\": 404\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3d4e3836-0eb1-43b7-91e2-d058ae2a3b00",
+          "name": "List post tags",
+          "request": {
+            "name": "List post tags",
+            "description": {
+              "content": "11 terms at verification, mostly scientific-conference labels — american-thoracic-society-ats, nacfc, north-american-cystic-fibrosis-conference, gordon-research-conferences, pnas, journal-of-cystic-fibrosis, j-p-morgan, cilia2022, featured.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "tags"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "1-based page of the collection to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit results to one or more slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit results to one or more slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "_fields",
+                  "value": "<string>",
+                  "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ddb676ec-480c-4570-b273-7cca523851d0",
+              "name": "Tag terms.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "tags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "_fields",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Total number of items in the unpaged collection.",
+                  "key": "X-WP-Total",
+                  "value": "7128"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 8230,\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"taxonomy\": \"post_tag\",\n    \"count\": 822,\n    \"description\": \"string\",\n    \"link\": \"http://aeIHlQoxzkAZDvqMGWXaEquLzYNyLDMM.skxuimjiql3PyGQF9G8zPyzS3xoFopw85xL\",\n    \"parent\": 1845,\n    \"meta\": {},\n    \"_links\": {\n      \"key_0\": 2083.9195454861424\n    }\n  },\n  {\n    \"id\": 4807,\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"taxonomy\": \"post_tag\",\n    \"count\": 9599,\n    \"description\": \"string\",\n    \"link\": \"http://RBXanquQyvdZETVvJyjByf.zvhmkB8LugeRrdWWDEt92XmSZT,,S5FLZsIwHl7X\",\n    \"parent\": 722,\n    \"meta\": {},\n    \"_links\": {\n      \"key_0\": \"string\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1af388bf-e0d5-4481-a444-81121bbd3d70",
+          "name": "Get a single tag term",
+          "request": {
+            "name": "Get a single tag term",
+            "description": {},
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "tags",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The object's unique numeric identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cdf26229-4232-46bf-84b9-47567a7b1667",
+              "name": "The tag term.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "tags",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The object's unique numeric identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 339,\n  \"name\": \"string\",\n  \"slug\": \"string\",\n  \"taxonomy\": \"category\",\n  \"count\": 9933,\n  \"description\": \"string\",\n  \"link\": \"https://biUfLWWOyMnXP.vqrpV0y967fglN0Ud5C1dDDmXEbyahR\",\n  \"parent\": 7286,\n  \"meta\": {},\n  \"_links\": {\n    \"key_0\": 1873.28282110913,\n    \"key_1\": \"string\",\n    \"key_2\": 2315.9880353948324\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "60b8c1b8-5bdc-4ec5-9f5e-3ae851579559",
+              "name": "No term exists with that ID in this taxonomy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "tags",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The object's unique numeric identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"rest_term_invalid\",\n  \"message\": \"Term does not exist.\",\n  \"data\": {\n    \"status\": 404\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ea7b0137-99f2-4291-a031-5fc02244ded6",
+          "name": "List registered post types",
+          "request": {
+            "name": "List registered post types",
+            "description": {
+              "content": "21 registered types. Beyond WordPress core, the install registers `events`, `values` and `portfolio` (site content) plus Elementor and Jupiter X builder types whose collections are either empty or 401 anonymously.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1577925d-e55a-42da-8f85-82dd1fd2740c",
+              "name": "A map of type slug to type descriptor.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": {\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"description\": \"string\",\n    \"hierarchical\": true,\n    \"has_archive\": false,\n    \"rest_base\": \"string\",\n    \"rest_namespace\": \"string\",\n    \"taxonomies\": [\n      \"string\",\n      \"string\"\n    ],\n    \"icon\": \"string\",\n    \"_links\": {\n      \"key_0\": 2150.9949720034706,\n      \"key_1\": 4116.224940271875\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb1e69f8-fdd3-407f-a550-ae3f621b1ab7",
+          "name": "Get a single post-type descriptor",
+          "request": {
+            "name": "Get a single post-type descriptor",
+            "description": {},
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "types",
+                ":type"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "type",
+                  "description": "(Required) The post-type slug, e.g. `post`, `page`, `events`, `values`."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4a1ee883-fca1-4b42-97da-03b0cd0c4909",
+              "name": "The type descriptor.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "types",
+                    ":type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "type",
+                      "description": "(Required) The post-type slug, e.g. `post`, `page`, `events`, `values`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"slug\": \"string\",\n  \"description\": \"string\",\n  \"hierarchical\": true,\n  \"has_archive\": true,\n  \"rest_base\": \"string\",\n  \"rest_namespace\": \"string\",\n  \"taxonomies\": [\n    \"string\",\n    \"string\"\n  ],\n  \"icon\": \"string\",\n  \"_links\": {\n    \"key_0\": 1494.073678469504,\n    \"key_1\": 1778.415618974074\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "35178463-8438-4f26-bdd3-4ab269ea2887",
+          "name": "List registered taxonomies",
+          "request": {
+            "name": "List registered taxonomies",
+            "description": {
+              "content": "6 taxonomies — category, post_tag, nav_menu, wp_pattern_category, portfolio_category, portfolio_tag.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "taxonomies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "16a41b8e-5a2b-4a76-b811-5590e2dbe464",
+              "name": "A map of taxonomy slug to taxonomy descriptor.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "taxonomies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": {\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"description\": \"string\",\n    \"types\": [\n      \"string\",\n      \"string\"\n    ],\n    \"hierarchical\": false,\n    \"rest_base\": \"string\",\n    \"rest_namespace\": \"string\",\n    \"_links\": {\n      \"key_0\": true\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0efc75cd-f896-4aea-ab20-972beccf7a58",
+          "name": "Get a single taxonomy descriptor",
+          "request": {
+            "name": "Get a single taxonomy descriptor",
+            "description": {},
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "taxonomies",
+                ":taxonomy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "taxonomy",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0a41a9cb-f8f4-413f-a3db-f3665b897ddf",
+              "name": "The taxonomy descriptor.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "taxonomies",
+                    ":taxonomy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "taxonomy",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"slug\": \"string\",\n  \"description\": \"string\",\n  \"types\": [\n    \"string\",\n    \"string\"\n  ],\n  \"hierarchical\": false,\n  \"rest_base\": \"string\",\n  \"rest_namespace\": \"string\",\n  \"_links\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4d02b572-d379-4be1-bcb3-ffb80d90ca60",
+          "name": "List publicly visible post statuses",
+          "request": {
+            "name": "List publicly visible post statuses",
+            "description": {
+              "content": "Two statuses are exposed anonymously — `publish` and `acf-disabled`. Draft, pending, private, future and trash are not returned to an unauthenticated caller.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "statuses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "590aaac9-4988-4983-a118-8475a07b40c5",
+              "name": "A map of status slug to status descriptor.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "statuses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": {\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"public\": true,\n    \"queryable\": false,\n    \"date_floating\": false,\n    \"_links\": {\n      \"key_0\": 8110\n    }\n  },\n  \"key_1\": {\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"public\": true,\n    \"queryable\": false,\n    \"date_floating\": true,\n    \"_links\": {\n      \"key_0\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ef2d8712-b8ab-4a11-beb4-7c810ee8535b",
+          "name": "Get a single status descriptor",
+          "request": {
+            "name": "Get a single status descriptor",
+            "description": {},
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "statuses",
+                ":status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "status",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "27f268a2-5b78-4b57-98b6-3e021ae2032d",
+              "name": "The status descriptor.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "statuses",
+                    ":status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "status",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"slug\": \"string\",\n  \"public\": false,\n  \"queryable\": false,\n  \"date_floating\": false,\n  \"_links\": {\n    \"key_0\": \"string\",\n    \"key_1\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://recodetx.com/wp-json",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "42b32498-9030-4c66-9850-6d99903cd91a",
+    "name": "ReCode Therapeutics Content Taxonomy API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "ReCode Therapeutics runs no developer program and markets no product API. The only machine-readable contract reachable from the public internet without credentials is the WordPress REST API registered at https://recodetx.com/wp-json/, which the site publishes as a consequence of running WordPress on WP Engine behind Cloudflare.\n\nThis document is DERIVED by the API Evangelist enrichment pipeline from the route index the site itself publishes at https://recodetx.com/wp-json/ (376 routes across 16 namespaces) and was verified against live anonymous responses on 2026-08-05. **Only operations that actually returned data without credentials are modelled here.** Everything write-side (POST/PUT/PATCH/ DELETE on every collection), and the administrative namespaces the site also registers (`aioseo/v1`, `elementor/v1`, `elementor-pro/v1`, `elementor-ai/v1`, `redirection/v1`, `wpe_sign_on_plugin/v1`, `wp-site-health/v1`, `wp-block-editor/v1`, `wp-abilities/v1`), return 401 `rest_forbidden` anonymously and are deliberately omitted rather than documented as capabilities.\n\nWhat the surface actually yields: 82 press releases and publications, 18 corporate pages, a 305-item media library, two site-specific custom post types registered into `wp/v2` (`events`, 50 items — conference and investor appearances; and `values`, 6 items — the company's stated values), the category and tag taxonomies, the registered type/status/taxonomy metadata, cross-content search, and the oEmbed 1.0 provider endpoint. Unlike many corporate WordPress installs, `content.rendered` IS populated on posts and pages here (5.7 KB on the most recent press release, 53 KB on the home page), so the API returns real prose and not just identity metadata.\n\nNote on `/wp/v2/users`: the site leaves author enumeration open, and the collection returns 200 with 5 author records anonymously. The operation is documented here because it is genuinely part of the observed surface, but API Evangelist deliberately packages no agent skill and no MCP tool against it, and records no individual from it. See `x-personal-data` on that operation.\n\nContact Support:\n Name: ReCode Therapeutics",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ReCode Therapeutics Content Media API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "media",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List media library items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/media",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a string."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+              },
+              {
+                "name": "media_type",
+                "value": "",
+                "type": "query",
+                "description": "Limit to a media type."
+              },
+              {
+                "name": "mime_type",
+                "value": "",
+                "type": "query",
+                "description": "Limit to a MIME type, e.g. `application/pdf`."
+              }
+            ]
+          },
+          "docs": "305 attachments at verification — logos, leadership headshots, conference posters and PDF decks. `source_url` is the direct file URL; `media_details.sizes` carries the generated image renditions."
+        },
+        {
+          "info": {
+            "name": "Get a single media item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/media/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object's unique numeric identifier."
+              }
+            ]
+          },
+          "docs": "Get a single media item"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

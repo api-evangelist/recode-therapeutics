@@ -1,0 +1,61 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ReCode Therapeutics Content Search API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search across every REST-exposed post type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/search",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "The search term."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Object type to search — `post` (any post type) or `term`."
+              },
+              {
+                "name": "subtype",
+                "value": "",
+                "type": "query",
+                "description": "Restrict to a registered subtype, e.g. `post`, `page`, `events`, `values`."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+              }
+            ]
+          },
+          "docs": "Returns lightweight hits (id, title, url, type, subtype) across posts and the custom types. A search for `mrna` returned 79 hits spanning the `post` and `events` subtypes at verification. Use `subtype` to constrain to one collection."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,178 @@
+openapi: 3.2.0
+info:
+  title: ReCode Therapeutics Content People API
+  version: 1.0.0
+  summary: The anonymously readable WordPress REST content API behind recodetx.com.
+  description: 'ReCode Therapeutics runs no developer program and markets no product API. The only machine-readable contract reachable from the public internet without credentials is the WordPress REST API registered at https://recodetx.com/wp-json/, which the site publishes as a consequence of running WordPress on WP Engine behind Cloudflare.
+
+
+    This document is DERIVED by the API Evangelist enrichment pipeline from the route index the site itself publishes at https://recodetx.com/wp-json/ (376 routes across 16 namespaces) and was verified against live anonymous responses on 2026-08-05. **Only operations that actually returned data without credentials are modelled here.** Everything write-side (POST/PUT/PATCH/ DELETE on every collection), and the administrative namespaces the site also registers (`aioseo/v1`, `elementor/v1`, `elementor-pro/v1`, `elementor-ai/v1`, `redirection/v1`, `wpe_sign_on_plugin/v1`, `wp-site-health/v1`, `wp-block-editor/v1`, `wp-abilities/v1`), return 401 `rest_forbidden` anonymously and are deliberately omitted rather than documented as capabilities.
+
+
+    What the surface actually yields: 82 press releases and publications, 18 corporate pages, a 305-item media library, two site-specific custom post types registered into `wp/v2` (`events`, 50 items — conference and investor appearances; and `values`, 6 items — the company''s stated values), the category and tag taxonomies, the registered type/status/taxonomy metadata, cross-content search, and the oEmbed 1.0 provider endpoint. Unlike many corporate WordPress installs, `content.rendered` IS populated on posts and pages here (5.7 KB on the most recent press release, 53 KB on the home page), so the API returns real prose and not just identity metadata.
+
+
+    Note on `/wp/v2/users`: the site leaves author enumeration open, and the collection returns 200 with 5 author records anonymously. The operation is documented here because it is genuinely part of the observed surface, but API Evangelist deliberately packages no agent skill and no MCP tool against it, and records no individual from it. See `x-personal-data` on that operation.'
+  contact:
+    name: ReCode Therapeutics
+    url: https://recodetx.com/
+  license:
+    name: Not stated
+    url: https://recodetx.com/terms-conditions/
+  x-derived-from: https://recodetx.com/wp-json/
+  x-verified: '2026-08-05'
+  x-upstream-contract: https://developer.wordpress.org/rest-api/
+servers:
+- url: https://recodetx.com/wp-json
+  description: Production WordPress REST API for recodetx.com (WP Engine, fronted by Cloudflare).
+tags:
+- name: people
+  description: Author records. Personal data — read the x-personal-data annotation before use.
+paths:
+  /wp/v2/users:
+    get:
+      operationId: listUsers
+      tags:
+      - people
+      summary: List site authors
+      description: Returns 200 with 5 author records anonymously — author enumeration is left open on this install. Each record carries `id`, `name`, `slug`, `description`, `link`, `url` and Gravatar `avatar_urls`. Email addresses and roles are NOT exposed.
+      x-personal-data:
+        contains: true
+        categories:
+        - name
+        - public-profile-url
+        - avatar
+        note: This operation returns records about identifiable people. API Evangelist documents its existence because it is part of the observed public surface, but deliberately packages no agent skill and no MCP tool against it, and records no individual from it anywhere in this repository. Consumers in the EU/UK should treat any retrieval as personal-data processing.
+        remediation: If ReCode Therapeutics does not intend author enumeration to be public, the `wp/v2/users` collection can be closed to unauthenticated callers with a `rest_authentication_errors` or `rest_endpoints` filter, or via the WP Engine / security-plugin setting that disables user enumeration.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: Author records.
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /wp/v2/users/{id}:
+    get:
+      operationId: getUser
+      tags:
+      - people
+      summary: Get a single author record
+      x-personal-data:
+        contains: true
+        note: See the x-personal-data annotation on listUsers.
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: The author record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: No author with that ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    page:
+      name: page
+      in: query
+      description: 1-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    id:
+      name: id
+      in: path
+      required: true
+      description: The object's unique numeric identifier.
+      schema:
+        type: integer
+    perPage:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    fields:
+      name: _fields
+      in: query
+      description: Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation.
+      schema:
+        type: string
+  schemas:
+    Links:
+      type: object
+      description: HAL-style link relations. `self`, `collection`, `about`, `author`, `replies`, `wp:featuredmedia`, `wp:attachment`, `wp:term`, and `curies` mapping the `wp:` prefix.
+      additionalProperties: true
+    User:
+      type: object
+      description: A site author. PERSONAL DATA — see the x-personal-data annotation on listUsers before retrieving or storing these records.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: The author's display name.
+        slug:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        link:
+          type: string
+          format: uri
+        avatar_urls:
+          type: object
+          description: Gravatar URLs keyed by pixel size.
+        meta:
+          type: object
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+      - id
+      - name
+      - slug
+    Error:
+      type: object
+      description: The WordPress REST error envelope. NOT RFC 9457 — the media type is `application/json`, not `application/problem+json`, and the field names are WordPress-specific.
+      properties:
+        code:
+          type: string
+          description: A machine-readable WordPress error slug, e.g. `rest_forbidden`.
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+            params:
+              type: object
+            details:
+              type: object
+      required:
+      - code
+      - message
+  headers:
+    XWPTotal:
+      description: Total number of items in the unpaged collection.
+      schema:
+        type: integer

@@ -1,0 +1,365 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ReCode Therapeutics Content API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "content",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List press releases and publications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/posts",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a string."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Limit to items published after a given ISO 8601 date."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Limit to items published before a given ISO 8601 date."
+              },
+              {
+                "name": "modified_after",
+                "value": "",
+                "type": "query",
+                "description": "Limit to items modified after a given ISO 8601 date — the incremental-sync cursor."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "orderby",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to one or more slugs."
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+              },
+              {
+                "name": "_embed",
+                "value": "",
+                "type": "query",
+                "description": "Inline the linked resources (author, featured media, terms) into `_embedded` instead of requiring follow-up requests."
+              },
+              {
+                "name": "categories",
+                "value": "",
+                "type": "query",
+                "description": "Limit to posts assigned the given category term IDs."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Limit to posts assigned the given tag term IDs."
+              }
+            ]
+          },
+          "docs": "82 published items at time of verification, spanning press releases (47), publications (9), presentations (9), featured items (14) and careers notices (3). Ordered by date descending by default."
+        },
+        {
+          "info": {
+            "name": "Get a single press release or publication",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/posts/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object's unique numeric identifier."
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+              },
+              {
+                "name": "_embed",
+                "value": "",
+                "type": "query",
+                "description": "Inline the linked resources (author, featured media, terms) into `_embedded` instead of requiring follow-up requests."
+              }
+            ]
+          },
+          "docs": "Get a single press release or publication"
+        },
+        {
+          "info": {
+            "name": "List corporate pages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/pages",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a string."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to one or more slugs."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+              },
+              {
+                "name": "_embed",
+                "value": "",
+                "type": "query",
+                "description": "Inline the linked resources (author, featured media, terms) into `_embedded` instead of requiring follow-up requests."
+              },
+              {
+                "name": "parent",
+                "value": "",
+                "type": "query",
+                "description": "Limit to children of the given page IDs."
+              }
+            ]
+          },
+          "docs": "18 published pages — Home, About/Our Purpose, Leadership, Careers & Culture, Science, Pipeline, Patients, Cystic Fibrosis, Primary Ciliary Dyskinesia, News, Partnering, and the legal set (Terms & Conditions, Privacy Policy, Cookie Policy). Hierarchical: `parent` and `menu_order` describe the site tree."
+        },
+        {
+          "info": {
+            "name": "Get a single corporate page",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/pages/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object's unique numeric identifier."
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+              },
+              {
+                "name": "_embed",
+                "value": "",
+                "type": "query",
+                "description": "Inline the linked resources (author, featured media, terms) into `_embedded` instead of requiring follow-up requests."
+              }
+            ]
+          },
+          "docs": "Get a single corporate page"
+        },
+        {
+          "info": {
+            "name": "List events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/events",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a string."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+              }
+            ]
+          },
+          "docs": "A site-specific custom post type registered into wp/v2. 50 items at verification — the conference appearances, investor presentations and scientific meetings the site lists."
+        },
+        {
+          "info": {
+            "name": "Get a single event",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/events/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object's unique numeric identifier."
+              }
+            ]
+          },
+          "docs": "Get a single event"
+        },
+        {
+          "info": {
+            "name": "List company values",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/values",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+              }
+            ]
+          },
+          "docs": "A site-specific custom post type registered into wp/v2. 6 items — the company values rendered on the About / Careers & Culture pages."
+        },
+        {
+          "info": {
+            "name": "Get a single company value",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/values/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object's unique numeric identifier."
+              }
+            ]
+          },
+          "docs": "Get a single company value"
+        },
+        {
+          "info": {
+            "name": "List approved comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2/comments",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "1-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+              }
+            ]
+          },
+          "docs": "Registered and readable, but the collection is empty (X-WP-Total 0) — commenting is not used on this site. Documented so a consumer does not mistake an empty array for an error."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

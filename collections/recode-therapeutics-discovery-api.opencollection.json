@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ReCode Therapeutics Content Discovery API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "discovery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the API root index",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/"
+          },
+          "docs": "Returns the site's self-description plus the full registered route index — 376 routes across 16 namespaces — and the authentication methods the install advertises (application passwords, whose authorization endpoint is wp-admin only)."
+        },
+        {
+          "info": {
+            "name": "Get the wp/v2 namespace index",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/wp/v2"
+          },
+          "docs": "Returns the routes registered under the wp/v2 namespace only."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

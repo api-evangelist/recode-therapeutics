@@ -1,0 +1,279 @@
+{
+  "item": [
+    {
+      "id": "2e309af6-cd46-4ca0-a49e-0c35c75a5e93",
+      "name": "people",
+      "description": {
+        "content": "Author records. Personal data — read the x-personal-data annotation before use.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4b3536f1-e402-4358-9dcd-d224a8c44e49",
+          "name": "List site authors",
+          "request": {
+            "name": "List site authors",
+            "description": {
+              "content": "Returns 200 with 5 author records anonymously — author enumeration is left open on this install. Each record carries `id`, `name`, `slug`, `description`, `link`, `url` and Gravatar `avatar_urls`. Email addresses and roles are NOT exposed.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "1-based page of the collection to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05)."
+                },
+                {
+                  "disabled": false,
+                  "key": "_fields",
+                  "value": "<string>",
+                  "description": "Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "eec254ea-b66b-428e-b56e-fc98ef84a946",
+              "name": "Author records.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "_fields",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Total number of items in the unpaged collection.",
+                  "key": "X-WP-Total",
+                  "value": "4772"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 4715,\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"description\": \"string\",\n    \"url\": \"string\",\n    \"link\": \"https://zIcrCrQCEmecKkgGfItTRp.lnvDCuZn,zjdhynUgrEh8x6cR1+AgjSYaPBsTjSk1FFX8UYmJMw\",\n    \"avatar_urls\": {},\n    \"meta\": {},\n    \"_links\": {\n      \"key_0\": 6762\n    }\n  },\n  {\n    \"id\": 3719,\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"description\": \"string\",\n    \"url\": \"string\",\n    \"link\": \"http://NKGstaKuAeLOzEpaUXbIq.zqPxMwiZ+hJbfXvZEhtasNnTXZXT33PwPT3Cgv\",\n    \"avatar_urls\": {},\n    \"meta\": {},\n    \"_links\": {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ed2e33c0-d978-4e67-9c7b-214907759009",
+          "name": "Get a single author record",
+          "request": {
+            "name": "Get a single author record",
+            "description": {},
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "users",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) The object's unique numeric identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e8a5306c-1b93-4732-9f7e-528c66c5339a",
+              "name": "The author record.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "users",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The object's unique numeric identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1617,\n  \"name\": \"string\",\n  \"slug\": \"string\",\n  \"description\": \"string\",\n  \"url\": \"string\",\n  \"link\": \"https://AA.rsewvZGbAnyHhI16qvbqSHX\",\n  \"avatar_urls\": {},\n  \"meta\": {},\n  \"_links\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c8acd520-977b-470e-b9ad-d10837150884",
+              "name": "No author with that ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "users",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) The object's unique numeric identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"data\": {\n    \"status\": 5432,\n    \"params\": {},\n    \"details\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://recodetx.com/wp-json",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5775830b-aead-4719-83fd-7dba1eed0f66",
+    "name": "ReCode Therapeutics Content People API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "ReCode Therapeutics runs no developer program and markets no product API. The only machine-readable contract reachable from the public internet without credentials is the WordPress REST API registered at https://recodetx.com/wp-json/, which the site publishes as a consequence of running WordPress on WP Engine behind Cloudflare.\n\nThis document is DERIVED by the API Evangelist enrichment pipeline from the route index the site itself publishes at https://recodetx.com/wp-json/ (376 routes across 16 namespaces) and was verified against live anonymous responses on 2026-08-05. **Only operations that actually returned data without credentials are modelled here.** Everything write-side (POST/PUT/PATCH/ DELETE on every collection), and the administrative namespaces the site also registers (`aioseo/v1`, `elementor/v1`, `elementor-pro/v1`, `elementor-ai/v1`, `redirection/v1`, `wpe_sign_on_plugin/v1`, `wp-site-health/v1`, `wp-block-editor/v1`, `wp-abilities/v1`), return 401 `rest_forbidden` anonymously and are deliberately omitted rather than documented as capabilities.\n\nWhat the surface actually yields: 82 press releases and publications, 18 corporate pages, a 305-item media library, two site-specific custom post types registered into `wp/v2` (`events`, 50 items — conference and investor appearances; and `values`, 6 items — the company's stated values), the category and tag taxonomies, the registered type/status/taxonomy metadata, cross-content search, and the oEmbed 1.0 provider endpoint. Unlike many corporate WordPress installs, `content.rendered` IS populated on posts and pages here (5.7 KB on the most recent press release, 53 KB on the home page), so the API returns real prose and not just identity metadata.\n\nNote on `/wp/v2/users`: the site leaves author enumeration open, and the collection returns 200 with 5 author records anonymously. The operation is documented here because it is genuinely part of the observed surface, but API Evangelist deliberately packages no agent skill and no MCP tool against it, and records no individual from it. See `x-personal-data` on that operation.\n\nContact Support:\n Name: ReCode Therapeutics",
+      "type": "text/plain"
+    }
+  }
+}

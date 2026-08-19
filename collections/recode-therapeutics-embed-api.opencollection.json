@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ReCode Therapeutics Content Embed API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "embed",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the oEmbed representation of a recodetx.com URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://recodetx.com/wp-json/oembed/1.0/embed",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query",
+                "description": "The recodetx.com URL to embed."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "maxwidth",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "oEmbed 1.0 provider endpoint. Returns provider/author/title/thumbnail plus the embeddable iframe HTML for any URL on this site. Returns 404 `oembed_invalid_url` for URLs on any other host."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

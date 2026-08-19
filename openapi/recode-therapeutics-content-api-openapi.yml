@@ -1,0 +1,630 @@
+openapi: 3.2.0
+info:
+  title: ReCode Therapeutics Content API
+  version: 1.0.0
+  summary: The anonymously readable WordPress REST content API behind recodetx.com.
+  description: 'ReCode Therapeutics runs no developer program and markets no product API. The only machine-readable contract reachable from the public internet without credentials is the WordPress REST API registered at https://recodetx.com/wp-json/, which the site publishes as a consequence of running WordPress on WP Engine behind Cloudflare.
+
+
+    This document is DERIVED by the API Evangelist enrichment pipeline from the route index the site itself publishes at https://recodetx.com/wp-json/ (376 routes across 16 namespaces) and was verified against live anonymous responses on 2026-08-05. **Only operations that actually returned data without credentials are modelled here.** Everything write-side (POST/PUT/PATCH/ DELETE on every collection), and the administrative namespaces the site also registers (`aioseo/v1`, `elementor/v1`, `elementor-pro/v1`, `elementor-ai/v1`, `redirection/v1`, `wpe_sign_on_plugin/v1`, `wp-site-health/v1`, `wp-block-editor/v1`, `wp-abilities/v1`), return 401 `rest_forbidden` anonymously and are deliberately omitted rather than documented as capabilities.
+
+
+    What the surface actually yields: 82 press releases and publications, 18 corporate pages, a 305-item media library, two site-specific custom post types registered into `wp/v2` (`events`, 50 items — conference and investor appearances; and `values`, 6 items — the company''s stated values), the category and tag taxonomies, the registered type/status/taxonomy metadata, cross-content search, and the oEmbed 1.0 provider endpoint. Unlike many corporate WordPress installs, `content.rendered` IS populated on posts and pages here (5.7 KB on the most recent press release, 53 KB on the home page), so the API returns real prose and not just identity metadata.
+
+
+    Note on `/wp/v2/users`: the site leaves author enumeration open, and the collection returns 200 with 5 author records anonymously. The operation is documented here because it is genuinely part of the observed surface, but API Evangelist deliberately packages no agent skill and no MCP tool against it, and records no individual from it. See `x-personal-data` on that operation.'
+  contact:
+    name: ReCode Therapeutics
+    url: https://recodetx.com/
+  license:
+    name: Not stated
+    url: https://recodetx.com/terms-conditions/
+  x-derived-from: https://recodetx.com/wp-json/
+  x-verified: '2026-08-05'
+  x-upstream-contract: https://developer.wordpress.org/rest-api/
+servers:
+- url: https://recodetx.com/wp-json
+  description: Production WordPress REST API for recodetx.com (WP Engine, fronted by Cloudflare).
+tags:
+- name: content
+  description: Press releases, publications, corporate pages and site-specific custom post types.
+paths:
+  /wp/v2/posts:
+    get:
+      operationId: listPosts
+      tags:
+      - content
+      summary: List press releases and publications
+      description: 82 published items at time of verification, spanning press releases (47), publications (9), presentations (9), featured items (14) and careers notices (3). Ordered by date descending by default.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      - $ref: '#/components/parameters/search'
+      - $ref: '#/components/parameters/after'
+      - $ref: '#/components/parameters/before'
+      - $ref: '#/components/parameters/modifiedAfter'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/orderbyPost'
+      - $ref: '#/components/parameters/slug'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/embed'
+      - name: categories
+        in: query
+        description: Limit to posts assigned the given category term IDs.
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: tags
+        in: query
+        description: Limit to posts assigned the given tag term IDs.
+        schema:
+          type: array
+          items:
+            type: integer
+      responses:
+        '200':
+          description: A page of posts. Total count and page count are in the response headers.
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+            Link:
+              $ref: '#/components/headers/LinkPagination'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/posts/{id}:
+    get:
+      operationId: getPost
+      tags:
+      - content
+      summary: Get a single press release or publication
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/embed'
+      responses:
+        '200':
+          description: The post.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          $ref: '#/components/responses/InvalidPostId'
+  /wp/v2/pages:
+    get:
+      operationId: listPages
+      tags:
+      - content
+      summary: List corporate pages
+      description: '18 published pages — Home, About/Our Purpose, Leadership, Careers & Culture, Science, Pipeline, Patients, Cystic Fibrosis, Primary Ciliary Dyskinesia, News, Partnering, and the legal set (Terms & Conditions, Privacy Policy, Cookie Policy). Hierarchical: `parent` and `menu_order` describe the site tree.'
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      - $ref: '#/components/parameters/search'
+      - $ref: '#/components/parameters/slug'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/embed'
+      - name: parent
+        in: query
+        description: Limit to children of the given page IDs.
+        schema:
+          type: array
+          items:
+            type: integer
+      responses:
+        '200':
+          description: A page of pages.
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+            Link:
+              $ref: '#/components/headers/LinkPagination'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/pages/{id}:
+    get:
+      operationId: getPage
+      tags:
+      - content
+      summary: Get a single corporate page
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/fields'
+      - $ref: '#/components/parameters/embed'
+      responses:
+        '200':
+          description: The page.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '404':
+          $ref: '#/components/responses/InvalidPostId'
+  /wp/v2/events:
+    get:
+      operationId: listEvents
+      tags:
+      - content
+      summary: List events
+      description: A site-specific custom post type registered into wp/v2. 50 items at verification — the conference appearances, investor presentations and scientific meetings the site lists.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      - $ref: '#/components/parameters/search'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: A page of events.
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomPost'
+  /wp/v2/events/{id}:
+    get:
+      operationId: getEvent
+      tags:
+      - content
+      summary: Get a single event
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: The event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomPost'
+        '404':
+          $ref: '#/components/responses/InvalidPostId'
+  /wp/v2/values:
+    get:
+      operationId: listValues
+      tags:
+      - content
+      summary: List company values
+      description: A site-specific custom post type registered into wp/v2. 6 items — the company values rendered on the About / Careers & Culture pages.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: A page of values.
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomPost'
+  /wp/v2/values/{id}:
+    get:
+      operationId: getValue
+      tags:
+      - content
+      summary: Get a single company value
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: The value.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomPost'
+        '404':
+          $ref: '#/components/responses/InvalidPostId'
+  /wp/v2/comments:
+    get:
+      operationId: listComments
+      tags:
+      - content
+      summary: List approved comments
+      description: Registered and readable, but the collection is empty (X-WP-Total 0) — commenting is not used on this site. Documented so a consumer does not mistake an empty array for an error.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: An (empty) page of comments.
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+components:
+  schemas:
+    Links:
+      type: object
+      description: HAL-style link relations. `self`, `collection`, `about`, `author`, `replies`, `wp:featuredmedia`, `wp:attachment`, `wp:term`, and `curies` mapping the `wp:` prefix.
+      additionalProperties: true
+    RenderedText:
+      type: object
+      description: WordPress's rendered-text envelope.
+      properties:
+        rendered:
+          type: string
+          description: HTML as rendered by the site's filters.
+        protected:
+          type: boolean
+      required:
+      - rendered
+    CustomPost:
+      type: object
+      description: An item of one of the site-specific custom post types registered into wp/v2 — `events` or `values`. Same envelope as Post, minus the category/tag facets those types do not register.
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        date_gmt:
+          type: string
+          format: date-time
+        guid:
+          $ref: '#/components/schemas/RenderedText'
+        modified:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+          enum:
+          - events
+          - values
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/RenderedText'
+        content:
+          $ref: '#/components/schemas/RenderedText'
+        excerpt:
+          $ref: '#/components/schemas/RenderedText'
+        featured_media:
+          type: integer
+        class_list:
+          type: array
+          items:
+            type: string
+        acf:
+          type: object
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+      - id
+      - type
+      - link
+      - title
+    Page:
+      type: object
+      description: A corporate page. Hierarchical — see `parent` and `menu_order`.
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        date_gmt:
+          type: string
+          format: date-time
+        guid:
+          $ref: '#/components/schemas/RenderedText'
+        modified:
+          type: string
+          format: date-time
+        modified_gmt:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+          enum:
+          - page
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/RenderedText'
+        content:
+          $ref: '#/components/schemas/RenderedText'
+        excerpt:
+          $ref: '#/components/schemas/RenderedText'
+        author:
+          type: integer
+        featured_media:
+          type: integer
+        parent:
+          type: integer
+          description: Parent page ID, or 0 for a top-level page.
+        menu_order:
+          type: integer
+        template:
+          type: string
+        meta:
+          type: object
+        acf:
+          type: object
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+      - id
+      - slug
+      - type
+      - link
+      - title
+    Post:
+      type: object
+      description: A press release, publication, presentation or careers notice.
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+          description: Publication date in site local time (UTC-7 at verification).
+        date_gmt:
+          type: string
+          format: date-time
+        guid:
+          $ref: '#/components/schemas/RenderedText'
+        modified:
+          type: string
+          format: date-time
+        modified_gmt:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+          enum:
+          - publish
+        type:
+          type: string
+          enum:
+          - post
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/RenderedText'
+        content:
+          $ref: '#/components/schemas/RenderedText'
+        excerpt:
+          $ref: '#/components/schemas/RenderedText'
+        author:
+          type: integer
+          description: ID of the authoring user — resolvable via /wp/v2/users/{id}.
+        featured_media:
+          type: integer
+          description: ID of the featured attachment — resolvable via /wp/v2/media/{id}.
+        comment_status:
+          type: string
+        ping_status:
+          type: string
+        sticky:
+          type: boolean
+        template:
+          type: string
+        format:
+          type: string
+        categories:
+          type: array
+          items:
+            type: integer
+        tags:
+          type: array
+          items:
+            type: integer
+        class_list:
+          type: array
+          items:
+            type: string
+        meta:
+          type: object
+        acf:
+          description: Advanced Custom Fields payload. Empty on the posts collection.
+          type: object
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+      - id
+      - date
+      - slug
+      - status
+      - type
+      - link
+      - title
+    Error:
+      type: object
+      description: The WordPress REST error envelope. NOT RFC 9457 — the media type is `application/json`, not `application/problem+json`, and the field names are WordPress-specific.
+      properties:
+        code:
+          type: string
+          description: A machine-readable WordPress error slug, e.g. `rest_forbidden`.
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+            params:
+              type: object
+            details:
+              type: object
+      required:
+      - code
+      - message
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      description: The object's unique numeric identifier.
+      schema:
+        type: integer
+    perPage:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    modifiedAfter:
+      name: modified_after
+      in: query
+      description: Limit to items modified after a given ISO 8601 date — the incremental-sync cursor.
+      schema:
+        type: string
+        format: date-time
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    before:
+      name: before
+      in: query
+      description: Limit to items published before a given ISO 8601 date.
+      schema:
+        type: string
+        format: date-time
+    embed:
+      name: _embed
+      in: query
+      description: Inline the linked resources (author, featured media, terms) into `_embedded` instead of requiring follow-up requests.
+      schema:
+        type: boolean
+    slug:
+      name: slug
+      in: query
+      description: Limit results to one or more slugs.
+      schema:
+        type: array
+        items:
+          type: string
+    page:
+      name: page
+      in: query
+      description: 1-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    after:
+      name: after
+      in: query
+      description: Limit to items published after a given ISO 8601 date.
+      schema:
+        type: string
+        format: date-time
+    fields:
+      name: _fields
+      in: query
+      description: Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation.
+      schema:
+        type: string
+    orderbyPost:
+      name: orderby
+      in: query
+      schema:
+        type: string
+        enum:
+        - author
+        - date
+        - id
+        - include
+        - modified
+        - parent
+        - relevance
+        - slug
+        - title
+        default: date
+    search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+  headers:
+    XWPTotal:
+      description: Total number of items in the unpaged collection.
+      schema:
+        type: integer
+    XWPTotalPages:
+      description: Total number of pages available at the current per_page.
+      schema:
+        type: integer
+    LinkPagination:
+      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
+      schema:
+        type: string
+  responses:
+    InvalidPostId:
+      description: No object exists with that ID in this collection.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_post_invalid_id
+            message: Invalid post ID.
+            data:
+              status: 404
+    InvalidParam:
+      description: A query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_invalid_param
+            message: 'Invalid parameter(s): per_page'
+            data:
+              status: 400
