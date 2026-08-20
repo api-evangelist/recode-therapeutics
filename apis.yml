@@ -26,6 +26,21 @@ created: '2026-08-05'
 modified: '2026-08-05'
 tags:
 - Company
+- Genetic Medicines
+- Biotechnology
+- biopharmaceuticals
+- mRNA
+- gene-correction
+- Lipid Nanoparticles
+- Drug Delivery
+- Rare Disease
+- cystic-fibrosis
+- primary-ciliary-dyskinesia
+- Clinical Trials
+- Life Sciences
+- content-api
+tags_raw:
+- Company
 - genetic-medicines
 - biotechnology
 - biopharmaceuticals
@@ -46,6 +61,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://recodetx.com/wp-json
   tags:
+  - Content
+  tags_raw:
   - content
   properties:
   - type: OpenAPI
@@ -66,6 +83,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://recodetx.com/wp-json
   tags:
+  - Discovery
+  tags_raw:
   - discovery
   properties:
   - type: OpenAPI
@@ -86,6 +105,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://recodetx.com/wp-json
   tags:
+  - Embed
+  tags_raw:
   - embed
   properties:
   - type: OpenAPI
@@ -106,6 +127,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://recodetx.com/wp-json
   tags:
+  - Media
+  tags_raw:
   - media
   properties:
   - type: OpenAPI
@@ -126,6 +149,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://recodetx.com/wp-json
   tags:
+  - People
+  tags_raw:
   - people
   properties:
   - type: OpenAPI
@@ -146,6 +171,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://recodetx.com/wp-json
   tags:
+  - Search
+  tags_raw:
   - search
   properties:
   - type: OpenAPI
@@ -166,6 +193,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://recodetx.com/wp-json
   tags:
+  - Taxonomy
+  tags_raw:
   - taxonomy
   properties:
   - type: OpenAPI
