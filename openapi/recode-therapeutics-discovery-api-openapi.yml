@@ -59,6 +59,10 @@ paths:
                 $ref: '#/components/schemas/NamespaceIndex'
 components:
   schemas:
+    Links:
+      type: object
+      description: HAL-style link relations. `self`, `collection`, `about`, `author`, `replies`, `wp:featuredmedia`, `wp:attachment`, `wp:term`, and `curies` mapping the `wp:` prefix.
+      additionalProperties: true
     NamespaceIndex:
       type: object
       properties:
@@ -101,7 +105,3 @@ components:
             type: object
         _links:
           $ref: '#/components/schemas/Links'
-    Links:
-      type: object
-      description: HAL-style link relations. `self`, `collection`, `about`, `author`, `replies`, `wp:featuredmedia`, `wp:attachment`, `wp:term`, and `curies` mapping the `wp:` prefix.
-      additionalProperties: true

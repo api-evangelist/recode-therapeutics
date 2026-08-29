@@ -125,11 +125,11 @@ components:
       - type
       - subtype
   headers:
-    XWPTotal:
-      description: Total number of items in the unpaged collection.
-      schema:
-        type: integer
     XWPTotalPages:
       description: Total number of pages available at the current per_page.
+      schema:
+        type: integer
+    XWPTotal:
+      description: Total number of items in the unpaged collection.
       schema:
         type: integer

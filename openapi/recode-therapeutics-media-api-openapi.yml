@@ -93,7 +93,57 @@ paths:
         '404':
           $ref: '#/components/responses/InvalidPostId'
 components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      description: The object's unique numeric identifier.
+      schema:
+        type: integer
+    page:
+      name: page
+      in: query
+      description: 1-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    fields:
+      name: _fields
+      in: query
+      description: Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation.
+      schema:
+        type: string
+    perPage:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
   schemas:
+    Links:
+      type: object
+      description: HAL-style link relations. `self`, `collection`, `about`, `author`, `replies`, `wp:featuredmedia`, `wp:attachment`, `wp:term`, and `curies` mapping the `wp:` prefix.
+      additionalProperties: true
     RenderedText:
       type: object
       description: WordPress's rendered-text envelope.
@@ -105,31 +155,6 @@ components:
           type: boolean
       required:
       - rendered
-    Links:
-      type: object
-      description: HAL-style link relations. `self`, `collection`, `about`, `author`, `replies`, `wp:featuredmedia`, `wp:attachment`, `wp:term`, and `curies` mapping the `wp:` prefix.
-      additionalProperties: true
-    Error:
-      type: object
-      description: The WordPress REST error envelope. NOT RFC 9457 — the media type is `application/json`, not `application/problem+json`, and the field names are WordPress-specific.
-      properties:
-        code:
-          type: string
-          description: A machine-readable WordPress error slug, e.g. `rest_forbidden`.
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-            params:
-              type: object
-            details:
-              type: object
-      required:
-      - code
-      - message
     MediaItem:
       type: object
       description: A media-library attachment.
@@ -187,63 +212,38 @@ components:
       - type
       - source_url
       - mime_type
+    Error:
+      type: object
+      description: The WordPress REST error envelope. NOT RFC 9457 — the media type is `application/json`, not `application/problem+json`, and the field names are WordPress-specific.
+      properties:
+        code:
+          type: string
+          description: A machine-readable WordPress error slug, e.g. `rest_forbidden`.
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+            params:
+              type: object
+            details:
+              type: object
+      required:
+      - code
+      - message
   headers:
-    LinkPagination:
-      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
-      schema:
-        type: string
-    XWPTotal:
-      description: Total number of items in the unpaged collection.
-      schema:
-        type: integer
     XWPTotalPages:
       description: Total number of pages available at the current per_page.
       schema:
         type: integer
-  parameters:
-    page:
-      name: page
-      in: query
-      description: 1-based page of the collection to return.
+    XWPTotal:
+      description: Total number of items in the unpaged collection.
       schema:
         type: integer
-        minimum: 1
-        default: 1
-    id:
-      name: id
-      in: path
-      required: true
-      description: The object's unique numeric identifier.
-      schema:
-        type: integer
-    perPage:
-      name: per_page
-      in: query
-      description: Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05).
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    search:
-      name: search
-      in: query
-      description: Limit results to those matching a string.
-      schema:
-        type: string
-    order:
-      name: order
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-    fields:
-      name: _fields
-      in: query
-      description: Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation.
+    LinkPagination:
+      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
       schema:
         type: string
   responses:

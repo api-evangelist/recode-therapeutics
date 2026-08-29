@@ -265,22 +265,140 @@ paths:
                 items:
                   type: object
 components:
-  schemas:
-    Links:
-      type: object
-      description: HAL-style link relations. `self`, `collection`, `about`, `author`, `replies`, `wp:featuredmedia`, `wp:attachment`, `wp:term`, and `curies` mapping the `wp:` prefix.
-      additionalProperties: true
-    RenderedText:
-      type: object
-      description: WordPress's rendered-text envelope.
-      properties:
-        rendered:
+  parameters:
+    embed:
+      name: _embed
+      in: query
+      description: Inline the linked resources (author, featured media, terms) into `_embedded` instead of requiring follow-up requests.
+      schema:
+        type: boolean
+    id:
+      name: id
+      in: path
+      required: true
+      description: The object's unique numeric identifier.
+      schema:
+        type: integer
+    orderbyPost:
+      name: orderby
+      in: query
+      schema:
+        type: string
+        enum:
+        - author
+        - date
+        - id
+        - include
+        - modified
+        - parent
+        - relevance
+        - slug
+        - title
+        default: date
+    perPage:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    modifiedAfter:
+      name: modified_after
+      in: query
+      description: Limit to items modified after a given ISO 8601 date — the incremental-sync cursor.
+      schema:
+        type: string
+        format: date-time
+    slug:
+      name: slug
+      in: query
+      description: Limit results to one or more slugs.
+      schema:
+        type: array
+        items:
           type: string
-          description: HTML as rendered by the site's filters.
-        protected:
-          type: boolean
-      required:
-      - rendered
+    order:
+      name: order
+      in: query
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    before:
+      name: before
+      in: query
+      description: Limit to items published before a given ISO 8601 date.
+      schema:
+        type: string
+        format: date-time
+    after:
+      name: after
+      in: query
+      description: Limit to items published after a given ISO 8601 date.
+      schema:
+        type: string
+        format: date-time
+    page:
+      name: page
+      in: query
+      description: 1-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    fields:
+      name: _fields
+      in: query
+      description: Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation.
+      schema:
+        type: string
+    search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+  responses:
+    InvalidParam:
+      description: A query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_invalid_param
+            message: 'Invalid parameter(s): per_page'
+            data:
+              status: 400
+    InvalidPostId:
+      description: No object exists with that ID in this collection.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_post_invalid_id
+            message: Invalid post ID.
+            data:
+              status: 404
+  headers:
+    XWPTotal:
+      description: Total number of items in the unpaged collection.
+      schema:
+        type: integer
+    LinkPagination:
+      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
+      schema:
+        type: string
+    XWPTotalPages:
+      description: Total number of pages available at the current per_page.
+      schema:
+        type: integer
+  schemas:
     CustomPost:
       type: object
       description: An item of one of the site-specific custom post types registered into wp/v2 — `events` or `values`. Same envelope as Post, minus the category/tag facets those types do not register.
@@ -331,66 +449,17 @@ components:
       - type
       - link
       - title
-    Page:
+    RenderedText:
       type: object
-      description: A corporate page. Hierarchical — see `parent` and `menu_order`.
+      description: WordPress's rendered-text envelope.
       properties:
-        id:
-          type: integer
-        date:
+        rendered:
           type: string
-          format: date-time
-        date_gmt:
-          type: string
-          format: date-time
-        guid:
-          $ref: '#/components/schemas/RenderedText'
-        modified:
-          type: string
-          format: date-time
-        modified_gmt:
-          type: string
-          format: date-time
-        slug:
-          type: string
-        status:
-          type: string
-        type:
-          type: string
-          enum:
-          - page
-        link:
-          type: string
-          format: uri
-        title:
-          $ref: '#/components/schemas/RenderedText'
-        content:
-          $ref: '#/components/schemas/RenderedText'
-        excerpt:
-          $ref: '#/components/schemas/RenderedText'
-        author:
-          type: integer
-        featured_media:
-          type: integer
-        parent:
-          type: integer
-          description: Parent page ID, or 0 for a top-level page.
-        menu_order:
-          type: integer
-        template:
-          type: string
-        meta:
-          type: object
-        acf:
-          type: object
-        _links:
-          $ref: '#/components/schemas/Links'
+          description: HTML as rendered by the site's filters.
+        protected:
+          type: boolean
       required:
-      - id
-      - slug
-      - type
-      - link
-      - title
+      - rendered
     Post:
       type: object
       description: A press release, publication, presentation or careers notice.
@@ -474,6 +543,70 @@ components:
       - type
       - link
       - title
+    Links:
+      type: object
+      description: HAL-style link relations. `self`, `collection`, `about`, `author`, `replies`, `wp:featuredmedia`, `wp:attachment`, `wp:term`, and `curies` mapping the `wp:` prefix.
+      additionalProperties: true
+    Page:
+      type: object
+      description: A corporate page. Hierarchical — see `parent` and `menu_order`.
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        date_gmt:
+          type: string
+          format: date-time
+        guid:
+          $ref: '#/components/schemas/RenderedText'
+        modified:
+          type: string
+          format: date-time
+        modified_gmt:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+          enum:
+          - page
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/RenderedText'
+        content:
+          $ref: '#/components/schemas/RenderedText'
+        excerpt:
+          $ref: '#/components/schemas/RenderedText'
+        author:
+          type: integer
+        featured_media:
+          type: integer
+        parent:
+          type: integer
+          description: Parent page ID, or 0 for a top-level page.
+        menu_order:
+          type: integer
+        template:
+          type: string
+        meta:
+          type: object
+        acf:
+          type: object
+        _links:
+          $ref: '#/components/schemas/Links'
+      required:
+      - id
+      - slug
+      - type
+      - link
+      - title
     Error:
       type: object
       description: The WordPress REST error envelope. NOT RFC 9457 — the media type is `application/json`, not `application/problem+json`, and the field names are WordPress-specific.
@@ -495,136 +628,3 @@ components:
       required:
       - code
       - message
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      description: The object's unique numeric identifier.
-      schema:
-        type: integer
-    perPage:
-      name: per_page
-      in: query
-      description: Items per page. Maximum 100 — a request for 101 is rejected with 400 `rest_invalid_param` (verified 2026-08-05).
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    modifiedAfter:
-      name: modified_after
-      in: query
-      description: Limit to items modified after a given ISO 8601 date — the incremental-sync cursor.
-      schema:
-        type: string
-        format: date-time
-    order:
-      name: order
-      in: query
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-    before:
-      name: before
-      in: query
-      description: Limit to items published before a given ISO 8601 date.
-      schema:
-        type: string
-        format: date-time
-    embed:
-      name: _embed
-      in: query
-      description: Inline the linked resources (author, featured media, terms) into `_embedded` instead of requiring follow-up requests.
-      schema:
-        type: boolean
-    slug:
-      name: slug
-      in: query
-      description: Limit results to one or more slugs.
-      schema:
-        type: array
-        items:
-          type: string
-    page:
-      name: page
-      in: query
-      description: 1-based page of the collection to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    after:
-      name: after
-      in: query
-      description: Limit to items published after a given ISO 8601 date.
-      schema:
-        type: string
-        format: date-time
-    fields:
-      name: _fields
-      in: query
-      description: Comma-separated sparse-fieldset projection, e.g. `_fields=id,slug,title`. Applies to every collection and item operation.
-      schema:
-        type: string
-    orderbyPost:
-      name: orderby
-      in: query
-      schema:
-        type: string
-        enum:
-        - author
-        - date
-        - id
-        - include
-        - modified
-        - parent
-        - relevance
-        - slug
-        - title
-        default: date
-    search:
-      name: search
-      in: query
-      description: Limit results to those matching a string.
-      schema:
-        type: string
-  headers:
-    XWPTotal:
-      description: Total number of items in the unpaged collection.
-      schema:
-        type: integer
-    XWPTotalPages:
-      description: Total number of pages available at the current per_page.
-      schema:
-        type: integer
-    LinkPagination:
-      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
-      schema:
-        type: string
-  responses:
-    InvalidPostId:
-      description: No object exists with that ID in this collection.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            code: rest_post_invalid_id
-            message: Invalid post ID.
-            data:
-              status: 404
-    InvalidParam:
-      description: A query parameter failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            code: rest_invalid_param
-            message: 'Invalid parameter(s): per_page'
-            data:
-              status: 400
