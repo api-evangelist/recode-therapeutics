@@ -15,6 +15,18 @@ description: >-
   publishes no product API, developer portal or API documentation; the only machine-readable
   surface reachable without credentials is the WordPress REST content API behind recodetx.com,
   catalogued here alongside the llms.txt the site publishes.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://recodetx.com/wp-content/uploads/2022/06/ReCode_Logo_Primary_Web.svg
 url: https://raw.githubusercontent.com/api-evangelist/recode-therapeutics/refs/heads/main/apis.yml
 x-type: company
