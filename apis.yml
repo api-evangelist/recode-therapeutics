@@ -38,18 +38,18 @@ created: '2026-08-05'
 modified: '2026-08-05'
 tags:
 - Company
-- genetic-medicines
-- biotechnology
+- Genetic Medicines
+- Biotechnology
 - biopharmaceuticals
-- mrna
+- mRNA
 - gene-correction
-- lipid-nanoparticles
-- drug-delivery
-- rare-disease
+- Lipid Nanoparticles
+- Drug Delivery
+- Rare Disease
 - Cystic Fibrosis
 - primary-ciliary-dyskinesia
-- clinical-trials
-- life-sciences
+- Clinical Trials
+- Life Sciences
 - content-api
 tags_raw:
 - Company
@@ -73,7 +73,7 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://recodetx.com/wp-json
   tags:
-  - content
+  - Content
   tags_raw:
   - content
   properties:
