@@ -2,7 +2,7 @@ overlay: 1.0.0
 info:
   title: API Evangelist enhancements — ReCode Therapeutics Content API
   version: 1.0.0
-  description: >-
+  x-description: >-
     An OpenAPI Overlay 1.0.0 document capturing the enhancements API Evangelist applies on top of
     the ReCode Therapeutics content contract. The base spec
     (openapi/recode-therapeutics-content-openapi.yml) is itself derived from the route index the
